@@ -12,7 +12,7 @@ import { UserProvider } from './context/UserContext';
 
 const client = new QueryClient({
   queries: {
-    refetchOnWindowsFocus: false,
+    refetchOnWindowsFocus: false
   }
 });
 
