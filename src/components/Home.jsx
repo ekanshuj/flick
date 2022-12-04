@@ -95,12 +95,11 @@ const FORM = styled.form`
   padding: 16px 15px;
   height: inherit;
   width: 100%;
-  font-size: 15px;
+  font-size: 19px;
   outline-color: gray;
   border: 1px solid rgb(191, 191, 191);
   border: none;
   outline: none;
-
   ::placeholder {
   color: rgb(191, 191, 191);
   }}}

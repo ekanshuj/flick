@@ -107,7 +107,7 @@ button {
   border: none;
 }`
 
-const Signin = () => {
+const Signup = () => {
   const navigate = useNavigate();
   const schema = Yup.object().shape({
     email: Yup.string().email().required("Please enter a valid email address or phone number."),
@@ -126,7 +126,7 @@ const Signin = () => {
       console.log(er);
     };
     onAuthStateChanged(auth, (currentUser) => {
-      currentUser && navigate("/home");
+      currentUser && navigate("/screen");
     })
   };
 
@@ -168,4 +168,4 @@ const Signin = () => {
   )
 }
 
-export default Signin
+export default Signup

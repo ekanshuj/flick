@@ -55,7 +55,7 @@ function Navbar() {
       </div>
       <div className="profile">
         <img src="https://external-preview.redd.it/0dTT-3SprPcsNCqo1GTCI-nqGM9EdZYwqyYr_pZ-baE.jpg?auto=webp&s=a1e8532d326f5aa122df2f31694bf142f117fc06" alt="Profile" />
-        <BiLogOutCircle size={"1.89rem"} color="#ffff" style={{ cursor: "pointer" }} />
+        <BiLogOutCircle size={"1.85rem"} color="#ffff" style={{ cursor: "pointer" }} />
       </div>
     </NAV>
   )

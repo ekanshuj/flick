@@ -158,7 +158,7 @@ const Signin = () => {
       console.log(er);
     };
     onAuthStateChanged(auth, (currentUser) => {
-      currentUser && navigate("/home");
+      currentUser && navigate("/screen");
     })
   };
 
