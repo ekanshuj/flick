@@ -147,8 +147,6 @@ const Signup = () => {
       if (currentUser) {
         cookies.set('user', currentUser.uid);
         navigate("/screen");
-      } else {
-        console.log('user already exists');
       };
     })
   };

@@ -164,24 +164,24 @@ const Signin = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (er) {
-      er.code === 'auth/wrong-password' || 'auth/user-not-found' && toast.error('Incorrect Credentials', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      if (er.code === 'auth/wrong-password' || 'auth/user-not-found') {
+        toast.error('Incorrect Credentials', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
     };
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         cookies.set('user', currentUser.uid);
         navigate("/screen");
-      } else {
-        console.log('wrong details / no user with current details');
-      }
+      };
     })
   };
 
