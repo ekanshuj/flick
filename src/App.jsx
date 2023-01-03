@@ -1,11 +1,12 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 import { Signin, Screen, Signup, Home } from './components';
 import { UserProvider } from './context/UserContext';
 
@@ -16,6 +17,12 @@ const client = new QueryClient({
 });
 
 const App = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (cookies.get('user')) {
+      navigate('/screen');
+    };
+  }, []);
   return (
     <QueryClientProvider client={client}>
       <main className="app">

@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { requests } from '../config';
-
 import { Navbar, Rows, Banner } from '.';
+import Cookies from 'universal-cookie';
+import { useNavigate } from 'react-router-dom';
+const cookies = new Cookies();
 
 const Screen = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!cookies.get('user')) {
+      navigate('/');
+    };
+  }, []);
   return (
     <>
       <Navbar />

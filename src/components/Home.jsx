@@ -4,9 +4,7 @@ import styled from 'styled-components';
 
 import background from '../assets/background.jpg';
 import logo from '../assets/logo.png';
-// import { UserContext } from '../context/UserContext';
-
-// import { auth } from '../config/firebase.config';
+import { UserContext } from '../context/UserContext';
 
 const HEADER = styled.div`
 position: absolute;
@@ -106,19 +104,27 @@ const FORM = styled.form`
   .btn {
     height: 65px;
     button {
-      height: inherit;
-      background: red;
+     height: inherit;
+     background: red;
      color: #ffffff;
      font-size: 2rem;
      padding: 0px 17px;
      border: none;
+     cursor: pointer;
     }}
 `
 
 const Home = () => {
   const navigate = useNavigate();
   const emailValRef = useRef();
-
+  const { userEmail } = useContext(UserContext);
+  const handleToggle = (e) => {
+    e.preventDefault();
+    if (emailValRef.current.value !== "") {
+      userEmail(emailValRef.current.value);
+      navigate("/signup");
+    };
+  };
   return (
     <>
       <HEADER>
@@ -137,7 +143,7 @@ const Home = () => {
           <h2>Watch anywhere. Cancel anytime.</h2>
           <h3>Ready to watch? Enter your email to create or restart your membership.</h3>
         </div>
-        <FORM onSubmit={() => { emailValRef.current.value.length > 0 && navigate("/signup") }}>
+        <FORM onSubmit={handleToggle}>
           <div className="email">
             <input
               type="email"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { auth } from '../config/firebase-config';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 import background from '../assets/background.jpg';
 import logo from '../assets/logo.png';
@@ -141,6 +143,11 @@ button {
 
 const Signin = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    if (cookies.get('user')) {
+      navigate('/screen');
+    };
+  }, []);
   const schema = Yup.object().shape({
     email: Yup.string().email().required("Please enter a valid email address or phone number."),
     password: Yup.string().min(4, "Your password must contain between 4 and 60 characters.").max(60).required()
@@ -153,12 +160,17 @@ const Signin = () => {
   const onSubmit = async (data) => {
     const { email, password } = data;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const data = await signInWithEmailAndPassword(auth, email, password);
     } catch (er) {
-      console.log(er);
+      er.code === 'auth/wrong-password' && console.log('wrong password');
     };
     onAuthStateChanged(auth, (currentUser) => {
-      currentUser && navigate("/screen");
+      if (currentUser) {
+        cookies.set('user', currentUser.uid);
+        navigate("/screen");
+      } else {
+        console.log('wrong details / no user with current details');
+      }
     })
   };
 
