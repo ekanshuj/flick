@@ -8,6 +8,8 @@ import * as Yup from 'yup';
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import background from '../assets/background.jpg';
 import logo from '../assets/logo.png';
@@ -160,9 +162,18 @@ const Signin = () => {
   const onSubmit = async (data) => {
     const { email, password } = data;
     try {
-      const data = await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (er) {
-      er.code === 'auth/wrong-password' && console.log('wrong password');
+      er.code === 'auth/wrong-password' || 'auth/user-not-found' && toast.error('Incorrect Credentials', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     };
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -209,6 +220,7 @@ const Signin = () => {
           </div>
         </CONTAINER>
       </div>
+      <ToastContainer />
     </DIVISION>
   )
 }

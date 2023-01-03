@@ -9,6 +9,8 @@ import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/aut
 import { UserContext } from '../context/UserContext';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import logo from '../assets/logo.png';
 
@@ -129,9 +131,17 @@ const Signup = () => {
   const onSubmit = async (data) => {
     const { email, password } = data;
     try {
-      const { user } = await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
     } catch (er) {
-      er.code === 'auth/email-already-in-use' && console.log('user already exists');
+      er.code === 'auth/email-already-in-use' && toast.error('User Already Exists', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     };
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -180,6 +190,7 @@ const Signup = () => {
           </CONTROL>
         </FORM>
       </CONTAINER>
+      <ToastContainer />
     </DIVISION>
   )
 }
