@@ -6,112 +6,146 @@ import background from '../assets/background.jpg';
 import logo from '../assets/logo.png';
 import { UserContext } from '../context/UserContext';
 
-const HEADER = styled.div`
-position: absolute;
-left: 0;
-right: 0;
-top: 0;
-max-width: 95vw;
-margin-inline: auto;
-display: flex;
-align-items: center;
-justify-content: space-between;
-.logo {
-  img {
-    width: 11rem;
-  }
-}`;
-
-const BTN = styled.button`
-background: #E50914;
-color: #ffff;
-padding: 0.5rem 0.9rem;
-font-size: 1.135rem;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-height: inherit;
-`;
-
 const DIVISION = styled.div`
-color: #ffffff;
 min-height: 100vh;
-background: rgba(0,0,0,.4);
+width: 100vw;
+display: grid;
+grid-template-rows: 12% 88%;
+font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+/* border: 2px solid blue; */
+background: rgba(0,0,0,.5);
 background-image: linear-gradient(0deg,rgba(0,0,0,.8) 0,transparent 60%,rgba(0,0,0,.8));
-display: flex;
-align-items: center;
-justify-content: center;
-flex-direction: column;
-&:before {
+:before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background: url(${background});
   z-index: -1;
 }
-.heading {
-    max-width: 84rem;
+`;
+
+const HEADER = styled.div`
+padding-top: 0.75rem;
+max-width: 62rem;
+padding-inline: 1rem;
+margin: 0 auto; 
+display: flex;
+align-items: center;
+justify-content: space-between;
+width: 100%;
+.logo {
+  img {
+    width: 9.5rem;
+  }
+}
+.btn {
+  background: #E50914;
+  color: #ffff;
+  padding: 0.48rem 1rem;
+  font-size: 1rem;
+  letter-spacing: 0.25px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+`;
+
+
+const SECTION = styled.div`
+/* border: 2px solid red; */
+width: 100%;
+color: #ffffff;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+.card {
+  /* border: 2px solid greenyellow; */
+    max-width: 60rem;
     margin-inline: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
     h1 {
-      margin: 0px 75px;
+      /* border: 2px solid green; */
+      font-family: 'Noto Sans JP', sans-serif;
+      margin: 0 auto;
       text-align: center;
-      font-size: 4rem;
+      font-size: 2.85rem;
+      font-weight: bolder;
     }
     h2 {
-      margin: 16px 75px;
-      font-size: 1.75rem;
+      /* border: 2px solid fuchsia; */
+      margin: 19px auto;
+      text-align: center;
+      font-size: 1.625rem;
       font-weight: 300;
+      letter-spacing: 1px;
     }
-    h3 {
-      margin: 0px 118px;
-      padding: 0px 47.5px 20px;
-      font-size: 1.25rem;
-      font-weight: 500;
-      padding: 0.45rem 0rem;
-    }}`;
+  }`;
 
 
 const FORM = styled.form`
-  width: 50rem;
-  margin-inline: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  .email {
-  flex: 1;
-  height: 65px;
-  .inputs {
-  width: 100%;
-  padding: 16px 15px;
-  height: inherit;
-  width: 100%;
-  font-size: 19px;
-  outline-color: gray;
-  border: 1px solid rgb(191, 191, 191);
-  border: none;
-  outline: none;
-  ::placeholder {
-  color: rgb(191, 191, 191);
-  }}}
-  .btn {
-    height: 65px;
-    button {
-     height: inherit;
-     background: red;
-     color: #ffffff;
-     font-size: 2rem;
-     padding: 0px 17px;
-     border: none;
-     cursor: pointer;
-    }}
+/* border: 2px solid khaki; */
+max-width: 60rem;
+margin-inline: auto;
+padding: 10px 20px;
+  .form__text {
+    h3 {
+      font-weight: 100;
+      padding-inline: auto;
+      padding-bottom: 0.85rem;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+  }
+  .form__data {
+    /* border: 2px solid purple; */
+    max-width: 42rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 65.3% 33.3%;
+    justify-content: space-between;
+    .form__data-email {
+      width: inherit;
+      /* border: 2px solid yellow; */
+      height: 3.75rem;
+      input {
+        width: 100%;
+        height: 100%;
+        padding-inline: 7px;
+        outline: none;
+        border: 0.5px solid gray;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 500;
+        color: white; 
+        background: rgba(0,0,0,.5);
+        ::placeholder {
+          font-size: 0.95rem;
+          padding-inline: 7px;
+          letter-spacing: 1px;
+          color: white;
+        }
+      }
+    }
+    .form__data-btn { 
+      /* border: 2px solid orange; */
+      width: inherit;
+      height: 3.75rem;
+      button {
+        border: none;
+        border-radius: 4px;
+        width: 100%;
+        height: 100%;
+        background: #E50914;
+        color: white;
+        font-size: 1.45rem;
+        font-weight: 700;
+      }
+    }
+  }
 `
 
 const Home = () => {
@@ -126,39 +160,43 @@ const Home = () => {
     };
   };
   return (
-    <>
+    <DIVISION>
       <HEADER>
         <div className="logo">
           <img src={logo} alt="Netflix" />
         </div>
-        <div className="btn">
-          <BTN onClick={() => {
-            navigate("/signin")
-          }}>Sign In</BTN>
+        <div onClick={() => {
+          navigate("/signin")
+        }} className="btn">
+          Sign In
         </div>
       </HEADER>
-      <DIVISION>
-        <div className="heading">
-          <h1>Unlimited movies, TV <br /> shows and more.</h1>
+      <SECTION>
+        <div className="card">
+          <h1>Unlimited movies, TV shows and more.</h1>
           <h2>Watch anywhere. Cancel anytime.</h2>
-          <h3>Ready to watch? Enter your email to create or restart your membership.</h3>
         </div>
         <FORM onSubmit={handleToggle}>
-          <div className="email">
-            <input
-              type="email"
-              placeholder='Email address'
-              name='email'
-              className='inputs'
-              ref={emailValRef}
-              required />
+          <div className="form__text">
+            <h3>Ready to watch? Enter your email to create or restart your membership.</h3>
           </div>
-          <div className="btn">
-            <button type="submit">Get Started &rarr;</button>
+          <div className="form__data">
+            <div className="form__data-email">
+              <input
+                type="email"
+                placeholder='Email address'
+                name='email'
+                className='inputs'
+                ref={emailValRef}
+                required />
+            </div>
+            <div className="form__data-btn">
+              <button type="submit">Get Started &rarr;</button>
+            </div>
           </div>
         </FORM>
-      </DIVISION>
-    </>
+      </SECTION>
+    </DIVISION>
   )
 }
 

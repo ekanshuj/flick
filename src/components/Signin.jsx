@@ -17,64 +17,71 @@ import logo from '../assets/logo.png';
 const DIVISION = styled.main`
 color: #ffffff;
 min-height: 100vh;
-background: rgba(0,0,0,.4);
-background-image: linear-gradient(0deg,rgba(0,0,0,.8) 0,transparent 60%,rgba(0,0,0,.8));
-display: flex;
-align-items: center;
-justify-content: center;
-&:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url(${background});
-  z-index: -1;
+width: 100vw;
+/* background: linear-gradient(0deg,rgba(0,0,0,.8) 0,transparent 60%,rgba(0,0,0,.8));
+background: rgba(0,0,0,.4); */
+background: url(${background});
+display: grid;
+grid-template-rows: 12% 88%;
+@media(max-width: 640px) {
+  :before {
+    background: none;
+  }
 }
-.mask {
-  background: rgba(0,0,0);
-  /* opacity: 0.7; */
+@media(max-width: 640px) {
+  grid-template-rows: 12% 88%;
+}
+@media(max-width: 400px) {
+  grid-template-rows: 6% 94%;
 }
 `;
 
 const HEADER = styled.div`
-position: absolute;
-left: 0;
-right: 0;
-top: 0;
-max-width: 95vw;
-margin-inline: auto;
+/* border: 2px solid fuchsia; */
+width: inherit;
+padding: 0 2.5rem;
 display: flex;
 align-items: center;
-justify-content: flex-start;
+/* justify-content: center; */
+@media(max-width: 640px) {
+  padding: 0rem 1rem;
+}
 .logo {
   img {
     width: 11rem;
+    @media(max-width: 400px) {
+      width: 5.5rem;
+    }
   }
 }`;
 
 const CONTAINER = styled.div`
 opacity: 1;
-z-index: 999;
-max-width: 20rem;
-margin: 4rem;
-display: flex;
-align-items: center;
-justify-content: space-between;
-flex-direction: column;
-/* &:before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0);
-  opacity: 0.6;
-} */
-.controls {
+width: inherit;
+/* border: 2px solid greenyellow; */
+.form__container {
+  background: rgba(0,0,0,0.7);
+  max-width: 28rem;
+  min-height: 30rem;
+  margin: 0 auto;
+  padding: 3.75rem;
+  @media(max-width: 640px) {
+    /* border: 1px solid fuchsia; */
+    max-width: inherit;
+    padding: 0rem 1.5rem;
+    margin: 0; 
+  }
+  
+  .form__container-controls {
   margin: 5rem 0rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  @media(max-width: 400px) {
+    margin: 2rem 0rem;
+  }
   p:first-child {
-    font-size: 1rem;
+    font-size: 1.15rem;
     margin: 11px 0px;
     color: gray;
     button {
@@ -98,11 +105,12 @@ flex-direction: column;
     }
   }
 }
+}
 `;
 
 const FORM = styled.form`
 p {
-  font-size: 2.235rem;
+  font-size: 2rem;
   font-weight: 600;
   margin: 17px 0px;
 }
@@ -115,17 +123,17 @@ input {
   outline-color: gray;
   border: none;
   outline: none;
-  border: 1px solid rgb(191, 191, 191);
-
+  background: #333333;
+  color: #ffffff;
   ::placeholder {
   color: rgb(191, 191, 191);
-  font-size: 1rem;
+  font-size: 15.35px;
+  letter-spacing: 0.75px;
   }
 }
 span {
   color: orange;
   font-size: 0.85rem;
-  /* padding: 3px 7px; */
 }`;
 
 const CONTROL = styled.div`
@@ -192,8 +200,8 @@ const Signin = () => {
           <img src={logo} alt="Netflix" />
         </div>
       </HEADER>
-      <div className="mask">
-        <CONTAINER>
+      <CONTAINER>
+        <div className='form__container'>
           <FORM onSubmit={handleSubmit(onSubmit)}>
             <p>Sign In</p>
             <input
@@ -212,14 +220,14 @@ const Signin = () => {
               <button type="submit">Sign In</button>
             </CONTROL>
           </FORM>
-          <div className="controls">
+          <div className="form__container-controls">
             <p>New to Netflix? <button onClick={() => {
               navigate("/")
             }}>Sign up now.</button></p>
             <p>This page is protected by Google reCAPTCHA to ensure you're not a bot. <button>Learn more.</button></p>
           </div>
-        </CONTAINER>
-      </div>
+        </div>
+      </CONTAINER>
       <ToastContainer />
     </DIVISION>
   )
