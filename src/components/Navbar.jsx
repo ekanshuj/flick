@@ -8,30 +8,31 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 const BLACK = css`
-background: black;
+background: rgba(0,0,0,0.9);
 `;
 
 const NAV = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 19px;
-    width: 100%;
-    z-index: 1;
-    ${props => props.toggle && BLACK};
+border: 2px solid greenyellow;
+width: inherit;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0px 19px;
+z-index: 1;
+/* ${props => props.toggle && BLACK}; */
     .logo {
+      border: 2px solid crimson;
       img {
         width: 165px;
         cursor: pointer;
       }
     }
     .profile {
+      border: 2px solid yellow;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 0px 15px;
       img {
         width: 40px;
         cursor: pointer;
@@ -42,17 +43,17 @@ const NAV = styled.div`
 
 function Navbar() {
   const navigate = useNavigate();
-  const [toggle, setToggle] = useState(0);
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    }
-  }, [])
+  // const [toggle, setToggle] = useState(0);
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   }
+  // }, [])
 
-  const handleScroll = () => {
-    setToggle(window.scrollY)
-  }
+  // const handleScroll = () => {
+  //   setToggle(window.scrollY)
+  // }
 
   const toggleLogout = async () => {
     await signOut(auth);
@@ -61,15 +62,14 @@ function Navbar() {
   }
 
   return (
-    <NAV toggle={toggle > 100}>
+    <NAV>
+      {/* <NAV toggle={toggle > 100}> */}
       <div className="logo">
         <img src="https://logodownload.org/wp-content/uploads/2014/10/netflix-logo.png" alt='Netflix' />
       </div>
       <div className="profile">
         <img src="https://external-preview.redd.it/0dTT-3SprPcsNCqo1GTCI-nqGM9EdZYwqyYr_pZ-baE.jpg?auto=webp&s=a1e8532d326f5aa122df2f31694bf142f117fc06" alt="Profile" />
-        {/* <button> */}
         <BiLogOutCircle onClick={toggleLogout} size={"1.85rem"} color="#ffff" style={{ cursor: "pointer" }} />
-        {/* </button> */}
       </div>
     </NAV>
   )

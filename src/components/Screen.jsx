@@ -1,9 +1,15 @@
 import React, { useEffect } from 'react';
 import { requests } from '../config';
-import { Navbar, Rows, Banner } from '.';
+import { Rows, Banner } from '.';
+import styled from 'styled-components';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
 const cookies = new Cookies();
+
+const SCREEN = styled.div`
+/* min-height: 100vh; */
+/* width: 100vw; */
+`;
 
 const Screen = () => {
   const navigate = useNavigate();
@@ -12,10 +18,10 @@ const Screen = () => {
       navigate('/');
     };
   }, []);
+
   return (
-    <>
-      <Navbar />
-      <Banner />
+    <SCREEN>
+      {/* <Banner /> */}
       <Rows title="NETFLIX ORIGINALS" fetchUrl={requests.fetchNetflixOriginals} Originals />
       <Rows title="Trending Now" fetchUrl={requests.fetchTrending} />
       <Rows title="Top Rated" fetchUrl={requests.fetchTopRated} />
@@ -24,7 +30,7 @@ const Screen = () => {
       <Rows title="Horror Movies" fetchUrl={requests.fetchHorrorMovies} />
       <Rows title="Romantic Movies" fetchUrl={requests.fetchRomanticMovies} />
       <Rows title="Documentaries" fetchUrl={requests.fetchDocumentaries} />
-    </>
+    </SCREEN>
   )
 }
 

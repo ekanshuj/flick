@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { auth } from '../config/firebase-config';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -16,71 +16,85 @@ import logo from '../assets/logo.png';
 
 const DIVISION = styled.main`
 color: #ffffff;
-min-height: 100vh;
+height: 100vh;
+width: 100vw;
 background: #ffffff;
-display: flex;
-align-items: center;
-justify-content: center;
+display: grid;
+grid-template-rows: 14% 86%;
 `;
 
 const HEADER = styled.div`
-position: absolute;
-left: 0;
-right: 0;
-top: 0;
-max-width: 95vw;
-margin-inline: auto;
+border: 1px solid greenyellow;
+width: inherit;
 display: flex;
 align-items: center;
 justify-content: space-between;
-border-bottom: 2px solid gray;
+border-bottom: 0.5px solid gray;
+padding: 0rem 2.5rem; 
 .logo {
   img {
     width: 11rem;
+    cursor: pointer;  
   }
 }`;
 
 const BTN = styled.button`
-background: #E50914;
-color: #ffff;
-padding: 0.5rem 0.9rem;
-font-size: 1.135rem;
+color: #000000;
 border: none;
-border-radius: 4px;
+background: none;
+font-size: 1.255rem;
 cursor: pointer;
 height: inherit;
+letter-spacing: 0.35px;
+margin: 0px 15px;
 `;
 
 const CONTAINER = styled.div`
+/* border: 2px solid fuchsia; */
 opacity: 1;
 z-index: 999;
-max-width: 28rem;
-margin: 4rem;
+max-width: 30rem;
+margin: 0 auto;
 display: flex;
 align-items: center;
 justify-content: space-between;
-flex-direction: column;
 `;
 
 const FORM = styled.form`
-p:first-child {
-  font-size: 2.5rem;
+/* border: 1px solid green; */
+p:nth-child(1),
+p:nth-child(2) {
+  font-size: 2rem;
+  letter-spacing: 1px;
   font-weight: 600;
-  margin-bottom: 17px;
-  color: #000000;
-  line-height: 43px;
+  color: #333333;
+  line-height: 39px;
 }
-.text {
-  font-size: 1.155rem;
+.form__text {
+  font-size: 1.11rem;
   color: #000000;
-  margin-bottom: 11px;
+  margin: 1.15rem 0;
+  font-weight: 300;
+}
+.form__email {
+  width: 100%;
+  /* border: 2px solid khaki; */
+  p {
+    font-size: 1.05rem;
+    font-weight: 300;
+  }
+  span {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: black; 
+  }
 }
 input {
   padding: 19px 15px;
   margin: 9px 0px;
   width: 100%;
   font-size: 15px;
-  border-radius: 3px;
+  border-radius: 2.5px;
   outline-color: gray;
   border: none;
   outline: none;
@@ -102,10 +116,10 @@ width: 100%;
 margin: 2rem 0rem;
 button {
   width: inherit;
-  padding: 19px 0px;
-  font-size: 1.15rem;
+  padding: 17px 0px;
+  font-size: 1.35rem;
   letter-spacing: 1px;
-  border-radius: 7px;
+  border-radius: 3px;
   cursor: pointer;
   background: #E50914;
   color: #ffff;
@@ -114,24 +128,27 @@ button {
 
 const Signup = () => {
   const navigate = useNavigate();
+  const emailRef = useRef();
+  const { email } = useContext(UserContext);
+
   useEffect(() => {
     if (cookies.get('user')) {
       navigate('/screen');
     };
   }, []);
+
   const schema = Yup.object().shape({
-    email: Yup.string().email().required("Please enter a valid email address or phone number."),
+    // email: Yup.string().email().required("Please enter a valid email address or phone number."),
     password: Yup.string().min(4, "Your password must contain between 4 and 60 characters.").max(60).required()
   });
-
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   });
 
   const onSubmit = async (data) => {
-    const { email, password } = data;
+    const { password } = data;
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, emailRef.current.innerText, password);
     } catch (er) {
       er.code === 'auth/email-already-in-use' && toast.error('User Already Exists', {
         position: "top-right",
@@ -151,13 +168,13 @@ const Signup = () => {
     })
   };
 
-  const { email } = useContext(UserContext);
-
   return (
     <DIVISION>
       <HEADER>
         <div className="logo">
-          <img src={logo} alt="Netflix" />
+          <img onClick={() => {
+            navigate("/")
+          }} src={logo} alt="Netflix" />
         </div>
         <div className="btn">
           <BTN onClick={() => {
@@ -167,19 +184,16 @@ const Signup = () => {
       </HEADER>
       <CONTAINER>
         <FORM onSubmit={handleSubmit(onSubmit)}>
-          <p>Create a password to start your membership</p>
-          <p className='text'>Just a few more steps and you're finished!</p>
-          <p className='text'> We hate paperwork, too.</p>
-          <input
-            type="email"
-            value={email}
-            placeholder='Email'
-            name='email'
-            {...register("email")} required />
-          <span>{errors.email?.message}</span>
+          <p>Welcome back!</p>
+          <p>Joining Netflix is easy.</p>
+          <p className='form__text'>Enter your password and you'll be watching in no time.</p>
+          <div className='form__email'>
+            <p>Email</p>
+            <span ref={emailRef}>{email}</span>
+          </div>
           <input
             type="password"
-            placeholder='Add a Password'
+            placeholder='Enter your Password'
             name='password'
             {...register("password")} required />
           <span>{errors.password?.message}</span>

@@ -4,13 +4,17 @@ import Axios from 'axios';
 import { requests } from '../config';
 import { baseUrl, backdrop } from '../config/config';
 import styled from 'styled-components';
+import { Navbar } from './';
 
-const HEADER = styled.div`
-  height: 85vh;
-  width: 100%;
+const DIVISION = styled.div`
+  height: 80vh;
+  width: 100vw;
   color: ghostwhite;
-  margin-bottom: 25px;
-  &:before {
+  display: grid; 
+  grid-template-rows: 12% 88%;
+  /* margin-bottom: 25px; */
+  border: 2px solid red;
+  /* &:before {
     content: '';
     background: ${props => props.background} no-repeat center center/cover;
     height: 85vh;
@@ -19,23 +23,37 @@ const HEADER = styled.div`
     top: 0;
     left: 0;
     background-position:50% 50%;
-  }
+  } */
 `;
 
-const DIVISION = styled.div`
-  display: inline-block;
-  position: relative;
-  top: 190px;
-  left: 35px;
-  padding: 0px 10px;
+const SECTION = styled.section`
+border: 2px solid fuchsia;
+  /* padding: 0px 10px; */
+   .banner {
+    border: 5px solid white;
+    margin: 0px 2rem;
+    .banner__heading {
+      border: 2px solid green;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
       h1 {
       font-size: 5rem;
-      font-family: 'Josefin Sans', sans-serif;  
-      text-shadow: 3px 3px 13px #000000;
+      font-family: 'Josefin Sans', sans-serif; 
+      @media(max-width: 940px) {
+        font-size: 4rem;
+      }
+      @media(max-width: 768px) {
+        font-size: 3rem;
+      }
     }
-    .buttons {
-    display: inline-block;
+    }
+    .banner__buttons {
+      border: 2px solid blue;
     padding: 12px 5px;
+    display: flex;
+      align-items: center;
+      justify-content: flex-start;
      button {
         padding: 10px 39px;
         font-size: 1rem;
@@ -54,24 +72,26 @@ const DIVISION = styled.div`
         }
      }
     }
-    .overview {
-    max-width: 620px;
-    display: block; 
-    margin: 7px 0px;
+    .banner__overview {
+      border: 2px solid blue;
+      max-width: 620px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    /* margin: 7px 0px; */
       h4 {
-        width: 100%;
-        margin-inline-start: 7px;
         padding: 7px 0px;
         font-size: 1.29rem;
         font-weight: 500;
         text-overflow:ellipsis;
         overflow:hidden;
-        display: -webkit-box !important;
+        display: -webkit-box;
         -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical !important;
+        -webkit-box-orient: vertical;
         white-space: normal;
       }
     }
+   }
 `;
 
 const MASK = styled.div`
@@ -88,31 +108,35 @@ const MASK = styled.div`
 `;
 
 const Banner = () => {
-
   const { data: screens, isLoading } = useQuery(["Netflix Screen"], async () => {
     const { data } = await Axios.get(`${baseUrl}/${requests.fetchNetflixOriginals}`);
-    return data.results[Math.floor(Math.random() * data.results.length - 1)]
+    return data.results[0]
+    // return data.results[Math.floor(Math.random() * data.results.length - 1)]
   })
-
   if (isLoading) return <div>Loading...</div>
 
   return (
     <>
-      <HEADER background={`url(${backdrop}${screens?.backdrop_path})`}>
-        <DIVISION>
-          <h1>
-            {screens?.name || screens?.title || screens?.original_name}
-          </h1>
-          <div className="buttons">
-            <button>Play</button>
-            <button>My List</button>
+      <DIVISION>
+        {/* <DIVISION background={`url(${backdrop}${screens?.backdrop_path})`}> */}
+        <Navbar />
+        <SECTION>
+          <div className="banner">
+            <div className="banner__heading">
+              <h1>
+                {screens?.name || screens?.title || screens?.original_name}
+              </h1>
+            </div>
+            <div className="banner__buttons">
+              <button>Play</button>
+              <button>My List</button>
+            </div>
+            <div className='banner__overview'>
+              <h4>{screens?.overview}</h4>
+            </div>
           </div>
-          <span className='overview'>
-            <h4>{screens?.overview}</h4>
-          </span>
-        </DIVISION>
-      </HEADER>
-      {/* <MASK></MASK> */}
+        </SECTION>
+      </DIVISION>
     </>
   )
 }

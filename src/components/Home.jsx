@@ -39,6 +39,7 @@ width: 100%;
 .logo {
   img {
     width: 9.5rem;
+    cursor: pointer;
   }
 }
 .btn {
@@ -163,7 +164,9 @@ const Home = () => {
     <DIVISION>
       <HEADER>
         <div className="logo">
-          <img src={logo} alt="Netflix" />
+          <img onClick={() => {
+            navigate("/")
+          }} src={logo} alt="Netflix" />
         </div>
         <div onClick={() => {
           navigate("/signin")

@@ -49,6 +49,7 @@ align-items: center;
 .logo {
   img {
     width: 11rem;
+    cursor: pointer;
     @media(max-width: 400px) {
       width: 5.5rem;
     }
@@ -197,7 +198,9 @@ const Signin = () => {
     <DIVISION>
       <HEADER>
         <div className="logo">
-          <img src={logo} alt="Netflix" />
+          <img onClick={() => {
+            navigate("/")
+          }} src={logo} alt="Netflix" />
         </div>
       </HEADER>
       <CONTAINER>
