@@ -13,6 +13,7 @@ const Signin = lazy(() => import('./components/Signin'));
 const Screen = lazy(() => import('./components/Screen'));
 const Signup = lazy(() => import('./components/Signup'));
 const Home = lazy(() => import('./components/Home'));
+const Preview = lazy(() => import('./components/Preview'));
 
 const client = new QueryClient({
   queries: {
@@ -37,6 +38,7 @@ const App = () => {
               <Route path="/signup" element={<Signup />} />
               <Route path="/signin" element={<Signin />} />
               <Route exact path="/screen" element={<Screen />} />
+              <Route exact path="/screen/:id" element={<Preview />} />
             </Routes>
           </Suspense>
         </UserProvider>

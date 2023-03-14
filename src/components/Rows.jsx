@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { baseUrl, poster } from '../config/config';
+import { Link } from 'react-router-dom';
 // import { Preview } from './';
 
 const DIVISION = styled.div`
@@ -66,7 +67,9 @@ const Rows = ({ title, fetchUrl, Originals }) => {
           {
             rows?.map((collection) => {
               return (
-                <img className={`poster ${Originals && 'originals'}`} key={collection.id} src={`${poster}${Originals ? collection.poster_path : collection.backdrop_path}`} alt={collection.name} />
+                <Link to={`/screen/${collection.id}`}>
+                  <img className={`poster ${Originals && 'originals'}`} key={collection.id} src={`${poster}${Originals ? collection.poster_path : collection.backdrop_path}`} alt={collection.name} />
+                </Link>
               )
             })
           }

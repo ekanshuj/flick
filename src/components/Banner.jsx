@@ -12,28 +12,28 @@ const DIVISION = styled.div`
   color: ghostwhite;
   display: grid; 
   grid-template-rows: 12% 88%;
-  /* margin-bottom: 25px; */
-  border: 2px solid red;
-  /* &:before {
+  margin-bottom: 25px;
+  &:before {
     content: '';
     background: ${props => props.background} no-repeat center center/cover;
-    height: 85vh;
+    height: inherit;
     width: 100%;
     position: absolute;
     top: 0;
     left: 0;
     background-position:50% 50%;
-  } */
+  }
 `;
 
 const SECTION = styled.section`
-border: 2px solid fuchsia;
-  /* padding: 0px 10px; */
+/* border: 2px solid fuchsia; */
+  z-index: 99;
    .banner {
-    border: 5px solid white;
-    margin: 0px 2rem;
+    /* border: 5px solid white; */
+    margin: 0px 3rem;
+    padding-top: 4rem;
     .banner__heading {
-      border: 2px solid green;
+      /* border: 2px solid green; */
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -44,12 +44,12 @@ border: 2px solid fuchsia;
         font-size: 4rem;
       }
       @media(max-width: 768px) {
-        font-size: 3rem;
+        font-size: 2.5rem;
       }
     }
     }
     .banner__buttons {
-      border: 2px solid blue;
+      /* border: 2px solid blue; */
     padding: 12px 5px;
     display: flex;
       align-items: center;
@@ -73,22 +73,23 @@ border: 2px solid fuchsia;
      }
     }
     .banner__overview {
-      border: 2px solid blue;
-      max-width: 620px;
+      /* border: 2px solid blue; */
+      max-width: 40rem;
       display: flex;
       align-items: center;
       justify-content: flex-start;
+      @media(max-width: 768px) {
+        max-width: 30rem;
+      }
     /* margin: 7px 0px; */
       h4 {
-        padding: 7px 0px;
+        margin: 7px 0px;
         font-size: 1.29rem;
         font-weight: 500;
-        text-overflow:ellipsis;
-        overflow:hidden;
         display: -webkit-box;
         -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        white-space: normal;
+        -webkit-box-orient: vertical;  
+        overflow: hidden;
       }
     }
    }
@@ -110,15 +111,15 @@ const MASK = styled.div`
 const Banner = () => {
   const { data: screens, isLoading } = useQuery(["Netflix Screen"], async () => {
     const { data } = await Axios.get(`${baseUrl}/${requests.fetchNetflixOriginals}`);
-    return data.results[0]
-    // return data.results[Math.floor(Math.random() * data.results.length - 1)]
+    // return data.results[0]
+    return data.results[Math.floor(Math.random() * data.results.length - 1)]
   })
   if (isLoading) return <div>Loading...</div>
 
   return (
     <>
-      <DIVISION>
-        {/* <DIVISION background={`url(${backdrop}${screens?.backdrop_path})`}> */}
+      {/* <DIVISION> */}
+      <DIVISION background={`url(${backdrop}${screens?.backdrop_path})`}>
         <Navbar />
         <SECTION>
           <div className="banner">

@@ -12,7 +12,7 @@ background: rgba(0,0,0,0.9);
 `;
 
 const NAV = styled.div`
-border: 2px solid greenyellow;
+/* border: 2px solid greenyellow; */
 width: inherit;
 display: flex;
 align-items: center;
@@ -21,14 +21,14 @@ padding: 0px 19px;
 z-index: 1;
 /* ${props => props.toggle && BLACK}; */
     .logo {
-      border: 2px solid crimson;
+      /* border: 2px solid crimson; */
       img {
         width: 165px;
         cursor: pointer;
       }
     }
     .profile {
-      border: 2px solid yellow;
+      /* border: 2px solid yellow; */
       display: flex;
       align-items: center;
       justify-content: center;

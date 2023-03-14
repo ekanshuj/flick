@@ -27,6 +27,7 @@ grid-template-rows: 12% 88%;
   :before {
     background: none;
   }
+  background: none;
 }
 @media(max-width: 640px) {
   grid-template-rows: 12% 88%;
@@ -71,6 +72,7 @@ width: inherit;
     max-width: inherit;
     padding: 0rem 1.5rem;
     margin: 0; 
+    background: #000000;
   }
   
   .form__container-controls {

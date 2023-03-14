@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 const cookies = new Cookies();
 
 const SCREEN = styled.div`
-/* min-height: 100vh; */
-/* width: 100vw; */
+min-height: 100vh;
+max-width: 100vw;
 `;
 
 const Screen = () => {
@@ -21,7 +21,7 @@ const Screen = () => {
 
   return (
     <SCREEN>
-      {/* <Banner /> */}
+      <Banner />
       <Rows title="NETFLIX ORIGINALS" fetchUrl={requests.fetchNetflixOriginals} Originals />
       <Rows title="Trending Now" fetchUrl={requests.fetchTrending} />
       <Rows title="Top Rated" fetchUrl={requests.fetchTopRated} />

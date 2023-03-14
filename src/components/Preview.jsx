@@ -11,7 +11,7 @@ background: gray;
 const Preview = () => {
   return (
     <DIVISION>
-      <h1>Hello Preview</h1>
+      <h1>Rows Preview</h1>
     </DIVISION>
   )
 }
