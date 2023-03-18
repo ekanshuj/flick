@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { baseUrl, poster } from '../config/config';
 import { Link } from 'react-router-dom';
-// import { Preview } from './';
 
 const DIVISION = styled.div`
   margin-inline-start: 13px;
@@ -55,7 +54,7 @@ const Rows = ({ title, fetchUrl, Originals }) => {
     const { data } = await Axios.get(`${baseUrl}/${fetchUrl}`);
     return data.results;
   });
-
+  // console.log(rows);
   { isLoading && <div>Loading...</div> }
   { isError && console.log(error.message) }
 
@@ -66,8 +65,9 @@ const Rows = ({ title, fetchUrl, Originals }) => {
         <div className="rows">
           {
             rows?.map((collection) => {
+              const titleParam = title.toLowerCase()
               return (
-                <Link to={`/screen/${collection.id}`}>
+                <Link to={`/screen/${titleParam}/${collection.id}`}>
                   <img className={`poster ${Originals && 'originals'}`} key={collection.id} src={`${poster}${Originals ? collection.poster_path : collection.backdrop_path}`} alt={collection.name} />
                 </Link>
               )

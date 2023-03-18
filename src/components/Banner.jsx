@@ -41,10 +41,13 @@ const SECTION = styled.section`
       font-size: 5rem;
       font-family: 'Josefin Sans', sans-serif; 
       @media(max-width: 940px) {
-        font-size: 4rem;
+        font-size: 3rem;
       }
       @media(max-width: 768px) {
         font-size: 2.5rem;
+      }
+      @media(max-width: 420px) {
+        font-size: 1.75rem;
       }
     }
     }
@@ -117,30 +120,26 @@ const Banner = () => {
   if (isLoading) return <div>Loading...</div>
 
   return (
-    <>
-      {/* <DIVISION> */}
-      <DIVISION background={`url(${backdrop}${screens?.backdrop_path})`}>
-        <Navbar />
-        <SECTION>
-          <div className="banner">
-            <div className="banner__heading">
-              <h1>
-                {screens?.name || screens?.title || screens?.original_name}
-              </h1>
-            </div>
-            <div className="banner__buttons">
-              <button>Play</button>
-              <button>My List</button>
-            </div>
-            <div className='banner__overview'>
-              <h4>{screens?.overview}</h4>
-            </div>
+    <DIVISION background={`url(${backdrop}${screens?.backdrop_path})`}>
+      <Navbar />
+      <SECTION>
+        <div className="banner">
+          <div className="banner__heading">
+            <h1>
+              {screens?.name || screens?.title || screens?.original_name}
+            </h1>
           </div>
-        </SECTION>
-      </DIVISION>
-    </>
+          <div className="banner__buttons">
+            <button>Play</button>
+            <button>My List</button>
+          </div>
+          <div className='banner__overview'>
+            <h4>{screens?.overview}</h4>
+          </div>
+        </div>
+      </SECTION>
+    </DIVISION>
   )
 }
 
 export default Banner
-// ea1e678c 
