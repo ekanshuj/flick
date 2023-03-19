@@ -157,9 +157,7 @@ button {
 const Signin = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    if (cookies.get('user')) {
-      navigate('/screen');
-    };
+    (cookies.get('user')) && navigate('/screen');
   }, []);
   const schema = Yup.object().shape({
     email: Yup.string().email().required("Please enter a valid email address or phone number."),

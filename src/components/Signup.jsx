@@ -132,9 +132,7 @@ const Signup = () => {
   const { email } = useContext(UserContext);
 
   useEffect(() => {
-    if (cookies.get('user')) {
-      navigate('/screen');
-    };
+    (cookies.get('user')) && navigate('/screen');
   }, []);
 
   const schema = Yup.object().shape({

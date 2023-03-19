@@ -14,9 +14,7 @@ max-width: 100vw;
 const Screen = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    if (!cookies.get('user')) {
-      navigate('/');
-    };
+    (!cookies.get('user')) && navigate('/signin');
   }, []);
 
   return (

@@ -38,7 +38,7 @@ const App = () => {
               <Route path="/signup" element={<Signup />} />
               <Route path="/signin" element={<Signin />} />
               <Route exact path="/screen" element={<Screen />} />
-              <Route exact path="/screen/:titleParam/:id" element={<Preview />} />
+              <Route exact path="/:media_type/:id" element={<Preview />} />
             </Routes>
           </Suspense>
         </UserProvider>

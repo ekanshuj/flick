@@ -54,7 +54,6 @@ const Rows = ({ title, fetchUrl, Originals }) => {
     const { data } = await Axios.get(`${baseUrl}/${fetchUrl}`);
     return data.results;
   });
-  // console.log(rows);
   { isLoading && <div>Loading...</div> }
   { isError && console.log(error.message) }
 
@@ -65,10 +64,10 @@ const Rows = ({ title, fetchUrl, Originals }) => {
         <div className="rows">
           {
             rows?.map((collection) => {
-              const titleParam = title.toLowerCase()
+              // && collection?.media_type || collection?.first_air_date ? 'tv' : 'movie'
               return (
-                <Link to={`/screen/${titleParam}/${collection.id}`}>
-                  <img className={`poster ${Originals && 'originals'}`} key={collection.id} src={`${poster}${Originals ? collection.poster_path : collection.backdrop_path}`} alt={collection.name} />
+                <Link key={collection.id} to={`/${collection?.media_type === 'tv' || collection?.first_air_date ? 'tv' : 'movie'}/${collection.id}`}>
+                  <img className={`poster ${Originals && 'originals'}`} src={`${poster}${Originals ? collection.poster_path : collection.backdrop_path}`} alt={collection.name} />
                 </Link>
               )
             })

@@ -7,22 +7,22 @@ import styled from 'styled-components';
 import { Navbar } from './';
 
 const DIVISION = styled.div`
+  &:before {
+    content: '';
+    background: ${props => props.background} no-repeat center center/cover;
+    height: inherit;
+    width: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-position:50% 50%;
+  }
   height: 80vh;
   width: 100vw;
   color: ghostwhite;
   display: grid; 
   grid-template-rows: 12% 88%;
   margin-bottom: 25px;
-  &:before {
-    content: '';
-    background: ${props => props.background} no-repeat center center/cover;
-    height: inherit;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-position:50% 50%;
-  }
 `;
 
 const SECTION = styled.section`
@@ -38,7 +38,7 @@ const SECTION = styled.section`
       align-items: center;
       justify-content: flex-start;
       h1 {
-      font-size: 5rem;
+      font-size: 4rem;
       font-family: 'Josefin Sans', sans-serif; 
       @media(max-width: 940px) {
         font-size: 3rem;
@@ -51,12 +51,12 @@ const SECTION = styled.section`
       }
     }
     }
-    .banner__buttons {
+    .banner__options {
       /* border: 2px solid blue; */
     padding: 12px 5px;
     display: flex;
-      align-items: center;
-      justify-content: flex-start;
+    align-items: center;
+    justify-content: flex-start;
      button {
         padding: 10px 39px;
         font-size: 1rem;
@@ -114,10 +114,9 @@ const MASK = styled.div`
 const Banner = () => {
   const { data: screens, isLoading } = useQuery(["Netflix Screen"], async () => {
     const { data } = await Axios.get(`${baseUrl}/${requests.fetchNetflixOriginals}`);
-    // return data.results[0]
     return data.results[Math.floor(Math.random() * data.results.length - 1)]
-  })
-  if (isLoading) return <div>Loading...</div>
+  });
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <DIVISION background={`url(${backdrop}${screens?.backdrop_path})`}>
@@ -129,7 +128,7 @@ const Banner = () => {
               {screens?.name || screens?.title || screens?.original_name}
             </h1>
           </div>
-          <div className="banner__buttons">
+          <div className="banner__options">
             <button>Play</button>
             <button>My List</button>
           </div>

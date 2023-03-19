@@ -59,6 +59,7 @@ function Navbar() {
     await signOut(auth);
     cookies.remove('user');
     navigate('/signin');
+    // window.location.reload();
   }
 
   return (
