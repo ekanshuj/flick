@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Axios from 'axios';
 import { requests } from '../config';
@@ -18,7 +18,7 @@ const DIVISION = styled.div`
     background-position:50% 50%;
   }
   height: 80vh;
-  width: 100vw;
+  width: 100%;
   color: ghostwhite;
   display: grid; 
   grid-template-rows: 12% 88%;
@@ -31,7 +31,7 @@ const SECTION = styled.section`
    .banner {
     /* border: 5px solid white; */
     margin: 0px 3rem;
-    padding-top: 4rem;
+    padding-top: 7rem;
     .banner__heading {
       /* border: 2px solid green; */
       display: flex;
@@ -40,13 +40,13 @@ const SECTION = styled.section`
       h1 {
       font-size: 4rem;
       font-family: 'Josefin Sans', sans-serif; 
-      @media(max-width: 940px) {
+      @media only screen and (max-width: 940px) {
         font-size: 3rem;
       }
-      @media(max-width: 768px) {
+      @media only screen and (max-width: 768px) {
         font-size: 2.5rem;
       }
-      @media(max-width: 420px) {
+      @media only screen and (max-width: 420px) {
         font-size: 1.75rem;
       }
     }
@@ -81,7 +81,7 @@ const SECTION = styled.section`
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      @media(max-width: 768px) {
+      @media only screen and (max-width: 768px) {
         max-width: 30rem;
       }
     /* margin: 7px 0px; */
@@ -99,16 +99,12 @@ const SECTION = styled.section`
 `;
 
 const MASK = styled.div`
-  &:before {
-    content: '';
     left: 0;
     background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0), transparent);
     height: 150px;
     width: 100%;
     position: absolute;
-    bottom: 140px;
-  }
-  
+    bottom: 130px;
 `;
 
 const Banner = () => {
@@ -137,6 +133,7 @@ const Banner = () => {
           </div>
         </div>
       </SECTION>
+      <MASK></MASK>
     </DIVISION>
   )
 }

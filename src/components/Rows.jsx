@@ -17,6 +17,8 @@ const DIVISION = styled.div`
   }
   .rows {
     display: flex;
+    align-items: center;
+    justify-content: flex-start;
     overflow-y: hidden;
     overflow-x: scroll;
     padding: 20px;
@@ -46,10 +48,12 @@ const DIVISION = styled.div`
         }
      }
   }
-
+  .row__end {
+    padding: 20px 20px 5px 20px;
+  }
 `;
 
-const Rows = ({ title, fetchUrl, Originals }) => {
+const Rows = ({ title, fetchUrl, Originals, Documentary }) => {
   const { data: rows, isLoading, error, isError } = useQuery(["Netflix Rows", { fetchUrl }], async () => {
     const { data } = await Axios.get(`${baseUrl}/${fetchUrl}`);
     return data.results;
@@ -61,7 +65,7 @@ const Rows = ({ title, fetchUrl, Originals }) => {
     <>
       <DIVISION>
         <h1 className={Originals && 'bold'}>{title}</h1>
-        <div className="rows">
+        <div className={`rows ${Documentary && 'row__end'}`}>
           {
             rows?.map((collection) => {
               // && collection?.media_type || collection?.first_air_date ? 'tv' : 'movie'

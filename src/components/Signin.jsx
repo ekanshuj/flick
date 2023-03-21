@@ -16,24 +16,35 @@ import logo from '../assets/logo.png';
 
 const DIVISION = styled.main`
 color: #ffffff;
-min-height: 100vh;
-width: 100vw;
-/* background: linear-gradient(0deg,rgba(0,0,0,.8) 0,transparent 60%,rgba(0,0,0,.8));
-background: rgba(0,0,0,.4); */
-background: url(${background});
+height: 100vh;
+background: rgba(0,0,0,.5);
 display: grid;
 grid-template-rows: 12% 88%;
-@media(max-width: 640px) {
-  :before {
-    background: none;
+@media only screen and (max-width: 640px) {
+  .image__mask {
+    display: none;
   }
-  background: none;
+  /* background: none; */
 }
-@media(max-width: 640px) {
+@media only screen and (max-width: 640px) {
   grid-template-rows: 12% 88%;
 }
-@media(max-width: 400px) {
+@media only screen and (max-width: 400px) {
   grid-template-rows: 6% 94%;
+}
+.image__mask {
+  background-size: cover;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 `;
 
@@ -44,14 +55,14 @@ padding: 0 2.5rem;
 display: flex;
 align-items: center;
 /* justify-content: center; */
-@media(max-width: 640px) {
+@media only screen and (max-width: 640px) {
   padding: 0rem 1rem;
 }
 .logo {
   img {
     width: 11rem;
     cursor: pointer;
-    @media(max-width: 400px) {
+    @media only screen and (max-width: 400px) {
       width: 5.5rem;
     }
   }
@@ -59,16 +70,16 @@ align-items: center;
 
 const CONTAINER = styled.div`
 opacity: 1;
-width: inherit;
+/* width: inherit; */
 /* border: 2px solid greenyellow; */
 .form__container {
-  background: rgba(0,0,0,0.7);
-  max-width: 28rem;
+  background: rgba(0,0,0,0.8);
+  max-width: 26.85rem;
   min-height: 30rem;
   margin: 0 auto;
-  padding: 3.75rem;
-  @media(max-width: 640px) {
-    /* border: 1px solid fuchsia; */
+  padding: 1.5rem 3.75rem;
+  /* border: 1px solid fuchsia; */
+  @media only screen and (max-width: 640px) {
     max-width: inherit;
     padding: 0rem 1.5rem;
     margin: 0; 
@@ -80,7 +91,7 @@ width: inherit;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  @media(max-width: 400px) {
+  @media only screen and (max-width: 400px) {
     margin: 2rem 0rem;
   }
   p:first-child {
@@ -116,6 +127,10 @@ p {
   font-size: 2rem;
   font-weight: 600;
   margin: 17px 0px;
+  color: #ffffff;
+  @media only screen and (max-width: 400px) {
+    margin: 41px 0px 17px 0px;
+  }
 }
 input {
   padding: 16px 15px;
@@ -196,6 +211,9 @@ const Signin = () => {
 
   return (
     <DIVISION>
+      <div className="image__mask">
+        <img src={background} alt="netflix" />
+      </div>
       <HEADER>
         <div className="logo">
           <img onClick={() => {
@@ -231,6 +249,9 @@ const Signin = () => {
           </div>
         </div>
       </CONTAINER>
+      {/* <div>
+        hello
+      </div> */}
       <ToastContainer />
     </DIVISION>
   )

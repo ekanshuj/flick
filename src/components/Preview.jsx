@@ -151,7 +151,6 @@ const Preview = () => {
     return data
   });
   if (isLoading) return <div>Loading...</div>;
-  console.log(type);
 
   return (
     <DIVISION>

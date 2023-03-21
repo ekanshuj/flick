@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 import { BiLogOutCircle } from 'react-icons/bi';
 import { signOut } from "firebase/auth";
 import { auth } from '../config/firebase-config';
 import { useNavigate } from 'react-router-dom';
+
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
-
-const BLACK = css`
-background: rgba(0,0,0,0.9);
-`;
 
 const NAV = styled.div`
 /* border: 2px solid greenyellow; */
@@ -19,12 +16,14 @@ align-items: center;
 justify-content: space-between;
 padding: 0px 19px;
 z-index: 1;
-/* ${props => props.toggle && BLACK}; */
     .logo {
       /* border: 2px solid crimson; */
       img {
         width: 165px;
         cursor: pointer;
+        @media only screen and (max-width: 768px) {
+          width: 125px;
+        }
       }
     }
     .profile {
@@ -37,34 +36,23 @@ z-index: 1;
         width: 40px;
         cursor: pointer;
         margin: 0px 5px;
+        @media only screen and (max-width: 768px) {
+          width: 30px;
+        }
       }
     }
 `;
 
 function Navbar() {
   const navigate = useNavigate();
-  // const [toggle, setToggle] = useState(0);
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll);
-  //   }
-  // }, [])
-
-  // const handleScroll = () => {
-  //   setToggle(window.scrollY)
-  // }
-
   const toggleLogout = async () => {
     await signOut(auth);
     cookies.remove('user');
     navigate('/signin');
-    // window.location.reload();
-  }
+  };
 
   return (
     <NAV>
-      {/* <NAV toggle={toggle > 100}> */}
       <div className="logo">
         <img src="https://logodownload.org/wp-content/uploads/2014/10/netflix-logo.png" alt='Netflix' />
       </div>

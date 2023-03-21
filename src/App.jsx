@@ -43,7 +43,7 @@ const App = () => {
           </Suspense>
         </UserProvider>
       </main>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   )
 }

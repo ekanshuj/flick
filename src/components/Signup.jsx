@@ -30,11 +30,17 @@ display: flex;
 align-items: center;
 justify-content: space-between;
 border-bottom: 0.5px solid gray;
-padding: 0rem 2.5rem; 
+padding: 0px 3px;
+@media only screen and (min-width: 440px) {
+  padding: 0rem 2.5rem;
+    } 
 .logo {
   img {
-    width: 11rem;
-    cursor: pointer;  
+    width: 6rem;
+    cursor: pointer; 
+    @media only screen and (min-width: 440px) {
+      width: 11rem;
+    } 
   }
 }`;
 
@@ -42,11 +48,14 @@ const BTN = styled.button`
 color: #000000;
 border: none;
 background: none;
-font-size: 1.255rem;
+font-size: 1.1rem;
 cursor: pointer;
 height: inherit;
 letter-spacing: 0.35px;
 margin: 0px 15px;
+@media only screen and (min-width: 440px) {
+  font-size: 1.255rem;
+  } 
 `;
 
 const CONTAINER = styled.div`
@@ -54,10 +63,13 @@ const CONTAINER = styled.div`
 opacity: 1;
 z-index: 999;
 max-width: 30rem;
-margin: 0 auto;
 display: flex;
 align-items: center;
 justify-content: space-between;
+padding: 0px 11px;
+@media only screen and (min-width: 440px) {
+  margin: 0 auto;
+  }
 `;
 
 const FORM = styled.form`
