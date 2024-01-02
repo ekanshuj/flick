@@ -1,220 +1,287 @@
-import React, { useContext, useEffect, useRef } from 'react';
-import { auth } from '../config/firebase-config';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useEffect } from "react";
+import { auth } from "../config/firebase-config";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
-import { UserContext } from '../context/UserContext';
-import Cookies from 'universal-cookie';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import Cookies from "universal-cookie";
 const cookies = new Cookies();
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import logo from '../assets/logo.png';
+import background from "../assets/background.jpg";
+import logo from "../assets/logo.png";
 
-const DIVISION = styled.main`
-color: #ffffff;
-height: 100vh;
-width: 100vw;
-background: #ffffff;
-display: grid;
-grid-template-rows: 14% 86%;
+const SIGNUP = styled.main`
+  height: 100dvh;
+  position: relative;
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+
+  @media only screen and (min-width: 768px) {
+    &::before {
+      content: "";
+      background: url(${background});
+      background-size: contain;
+      width: 100vw;
+      height: 100dvh;
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.2;
+    }
+  }
+
+  nav {
+    /* border: 2px solid green; */
+    padding: 1rem 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .nav_logo {
+      /* border: 2px solid yellow; */
+      display: flex;
+      align-items: center;
+      padding-left: 0.5rem;
+
+      cursor: pointer;
+
+      @media only screen and (min-width: 1024px) {
+        justify-content: center;
+      }
+
+      img {
+        width: 50%;
+        @media only screen and (min-width: 768px) {
+          width: 60%;
+        }
+      }
+    }
+  }
+
+  section {
+    padding: 0.5rem 0;
+    .form_division {
+      border-radius: 0.7rem;
+      max-width: inherit;
+      padding: 0rem 1.5rem;
+      margin: 0;
+      background: #000000;
+      @media only screen and (min-width: 768px) {
+        background: rgba(0, 0, 0, 0.5);
+        max-width: 23rem;
+        margin: 0 auto;
+        padding: 1rem 2.75rem;
+      }
+
+      .form_division-head {
+        p {
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin: 1.1rem 0;
+          color: #ffffff;
+          @media only screen and (min-width: 640px) {
+            font-size: 1.75rem;
+          }
+          @media only screen and (min-width: 1024px) {
+            font-size: 2rem;
+          }
+        }
+      }
+
+      form {
+        input {
+          padding: 0.9rem 1rem;
+          margin: 9px 0px;
+          width: 100%;
+          font-size: 15px;
+          border-radius: 5px;
+          outline-color: gray;
+          /* border: none; */
+          outline: none;
+          background: #333333;
+          color: #ffffff;
+          ::placeholder {
+            color: rgb(191, 191, 191);
+            font-size: 15.35px;
+            letter-spacing: 0.75px;
+          }
+          @media only screen and (min-width: 640px) {
+            padding: 1rem;
+          }
+        }
+        span {
+          color: orange;
+          font-size: 0.85rem;
+        }
+        .form_controls {
+          width: 100%;
+          margin: 2rem 0rem;
+          button {
+            width: inherit;
+            padding: 0.7em 0;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            border-radius: 7px;
+            cursor: pointer;
+            background: #d90429;
+            color: #ffff;
+            border: none;
+            @media only screen and (min-width: 640px) {
+              font-size: 1.17em;
+            }
+          }
+        }
+      }
+
+      .form_division-tail {
+        /* border: 2px solid green; */
+        margin: 2.5rem 0rem;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        @media only screen and (min-width: 640px) {
+          margin: 3.5rem 0rem;
+        }
+        p:first-child {
+          font-size: 1rem;
+          margin: 11px 0px;
+          color: gray;
+          @media only screen and (min-width: 640px) {
+            font-size: 1.15rem;
+          }
+          button {
+            border: none;
+            outline: none;
+            background: transparent;
+            color: #ffffff;
+            font-size: 1rem;
+            cursor: pointer;
+          }
+        }
+        p:last-child {
+          color: gray;
+          font-size: 0.85rem;
+          button {
+            border: none;
+            outline: none;
+            background: transparent;
+            color: blue;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
 `;
-
-const HEADER = styled.div`
-border: 1px solid greenyellow;
-width: inherit;
-display: flex;
-align-items: center;
-justify-content: space-between;
-border-bottom: 0.5px solid gray;
-padding: 0px 3px;
-@media only screen and (min-width: 440px) {
-  padding: 0rem 2.5rem;
-    } 
-.logo {
-  img {
-    width: 6rem;
-    cursor: pointer; 
-    @media only screen and (min-width: 440px) {
-      width: 11rem;
-    } 
-  }
-}`;
-
-const BTN = styled.button`
-color: #000000;
-border: none;
-background: none;
-font-size: 1.1rem;
-cursor: pointer;
-height: inherit;
-letter-spacing: 0.35px;
-margin: 0px 15px;
-@media only screen and (min-width: 440px) {
-  font-size: 1.255rem;
-  } 
-`;
-
-const CONTAINER = styled.div`
-/* border: 2px solid fuchsia; */
-opacity: 1;
-z-index: 999;
-max-width: 30rem;
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 0px 11px;
-@media only screen and (min-width: 440px) {
-  margin: 0 auto;
-  }
-`;
-
-const FORM = styled.form`
-/* border: 1px solid green; */
-p:nth-child(1),
-p:nth-child(2) {
-  font-size: 2rem;
-  letter-spacing: 1px;
-  font-weight: 600;
-  color: #333333;
-  line-height: 39px;
-}
-.form__text {
-  font-size: 1.11rem;
-  color: #000000;
-  margin: 1.15rem 0;
-  font-weight: 300;
-}
-.form__email {
-  width: 100%;
-  /* border: 2px solid khaki; */
-  p {
-    font-size: 1.05rem;
-    font-weight: 300;
-  }
-  span {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: black; 
-  }
-}
-input {
-  padding: 19px 15px;
-  margin: 9px 0px;
-  width: 100%;
-  font-size: 15px;
-  border-radius: 2.5px;
-  outline-color: gray;
-  border: none;
-  outline: none;
-  border: 1px solid #000000;
-
-  ::placeholder {
-  color: rgb(191, 191, 191);
-  font-size: 1rem;
-  }
-}
-span {
-  color: orange;
-  font-size: 0.85rem;
-  /* padding: 3px 7px; */
-}`;
-
-const CONTROL = styled.div`
-width: 100%;
-margin: 2rem 0rem;
-button {
-  width: inherit;
-  padding: 17px 0px;
-  font-size: 1.35rem;
-  letter-spacing: 1px;
-  border-radius: 3px;
-  cursor: pointer;
-  background: #E50914;
-  color: #ffff;
-  border: none;
-}`
 
 const Signup = () => {
   const navigate = useNavigate();
-  const emailRef = useRef();
-  const { email } = useContext(UserContext);
-
   useEffect(() => {
-    (cookies.get('user')) && navigate('/screen');
+    cookies.get("user") && navigate("/");
   }, []);
 
   const schema = Yup.object().shape({
     // email: Yup.string().email().required("Please enter a valid email address or phone number."),
-    password: Yup.string().min(4, "Your password must contain between 4 and 60 characters.").max(60).required()
+    password: Yup.string()
+      .min(4, "Your password must contain between 4 and 60 characters.")
+      .max(60)
+      .required(),
   });
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(schema)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data) => {
-    const { password } = data;
+    const { email, password } = data;
     try {
-      await createUserWithEmailAndPassword(auth, emailRef.current.innerText, password);
+      await createUserWithEmailAndPassword(auth, email, password);
     } catch (er) {
-      er.code === 'auth/email-already-in-use' && toast.error('User Already Exists', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    };
+      er.code === "auth/email-already-in-use" &&
+        toast.error("User Already Exists", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+    }
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        cookies.set('user', currentUser.uid);
-        navigate("/screen");
-      };
-    })
+        cookies.set("user", currentUser.uid);
+        navigate("/");
+      }
+    });
   };
 
   return (
-    <DIVISION>
-      <HEADER>
-        <div className="logo">
-          <img onClick={() => {
-            navigate("/")
-          }} src={logo} alt="Netflix" />
+    <SIGNUP>
+      <nav>
+        <div onClick={() => navigate("/")} className="nav_logo">
+          <img src={logo} alt="Flick" loading="lazy" />
         </div>
-        <div className="btn">
-          <BTN onClick={() => {
-            navigate("/signin")
-          }}>Sign In</BTN>
-        </div>
-      </HEADER>
-      <CONTAINER>
-        <FORM onSubmit={handleSubmit(onSubmit)}>
-          <p>Welcome back!</p>
-          <p>Joining Netflix is easy.</p>
-          <p className='form__text'>Enter your password and you'll be watching in no time.</p>
-          <div className='form__email'>
-            <p>Email</p>
-            <span ref={emailRef}>{email}</span>
+      </nav>
+      <section>
+        <div className="form_division">
+          <div className="form_division-head">
+            <p>Sign Up</p>
           </div>
-          <input
-            type="password"
-            placeholder='Enter your Password'
-            name='password'
-            {...register("password")} required />
-          <span>{errors.password?.message}</span>
-          <CONTROL>
-            <button type="submit">Next</button>
-          </CONTROL>
-        </FORM>
-      </CONTAINER>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input
+              type="email"
+              placeholder="Email or phone number"
+              name="email"
+              {...register("email")}
+              required
+            />
+            <span>{errors.email?.message}</span>
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              {...register("password")}
+              required
+            />
+            <span>{errors.password?.message}</span>
+            <div className="form_controls">
+              <button type="submit">Sign Up</button>
+            </div>
+          </form>
+          <div className="form_division-tail">
+            <p>
+              OG?{" "}
+              <button
+                onClick={() => {
+                  navigate("/signin");
+                }}
+              >
+                Sign In.
+              </button>
+            </p>
+            <p>
+              This page is protected by Google reCAPTCHA to ensure you're not a
+              bot. <button>Learn more.</button>
+            </p>
+          </div>
+        </div>
+      </section>
       <ToastContainer />
-    </DIVISION>
-  )
-}
+    </SIGNUP>
+  );
+};
 
-export default Signup
+export default Signup;
