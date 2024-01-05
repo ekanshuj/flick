@@ -1,2 +1,2 @@
 export { default as Row } from "./Row";
-export { default as Preview } from "./Preview";
+export { default as Data } from "./Data";

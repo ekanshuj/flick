@@ -9,7 +9,7 @@ const Signin = lazy(() => import("./components/Signin"));
 const Page = lazy(() => import("./components/Page"));
 const Signup = lazy(() => import("./components/Signup"));
 const Home = lazy(() => import("./components/Home"));
-const Preview = lazy(() => import("./components/Preview"));
+const Data = lazy(() => import("./components/Data"));
 
 const client = new QueryClient({
   defaultOptions: {
@@ -37,7 +37,7 @@ const App = () => {
             />
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<Signin />} />
-            <Route exact path="/:media_type/:id" element={<Preview />} />
+            <Route exact path="/:media_type/:id/:name" element={<Data />} />
           </Routes>
         </Suspense>
       </main>

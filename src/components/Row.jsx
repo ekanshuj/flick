@@ -153,6 +153,8 @@ const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
     return data.results;
   });
 
+  // console.log(row);
+
   isLoading && <div>Loading...</div>;
   isError && console.log(error.message);
 
@@ -183,7 +185,7 @@ const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
                       collection?.first_air_date
                         ? "tv"
                         : "movie"
-                    }/${collection?.id}`}
+                    }/${collection?.id}/${collection?.name}`}
                   >
                     <img
                       className="poster"

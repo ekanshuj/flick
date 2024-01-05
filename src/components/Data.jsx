@@ -12,7 +12,7 @@ const DIVISION = styled.div`
   width: 100vw;
 `;
 
-const PREVIEW = styled.div`
+const DATA = styled.div`
   &:before {
     content: "";
     background: ${(props) => props.background} no-repeat center center/cover;
@@ -30,11 +30,11 @@ const PREVIEW = styled.div`
   color: white;
   display: grid;
   grid-template-rows: 12% 88%;
-  .preview__info {
+  .data__info {
     /* border: 2px solid white; */
     margin: 0px 3rem;
     padding-top: 3rem;
-    .preview__info-heading {
+    .data__info-heading {
       display: flex;
       align-items: flex-start;
       justify-content: center;
@@ -63,7 +63,7 @@ const PREVIEW = styled.div`
         padding: 3px 5px;
       }
     }
-    .preview__info-options {
+    .data__info-options {
       padding: 25px 5px;
       display: flex;
       align-items: center;
@@ -86,7 +86,7 @@ const PREVIEW = styled.div`
         }
       }
     }
-    .preview__info-overview {
+    .data__info-overview {
       /* border: 2px solid blue; */
       max-width: 45rem;
       display: flex;
@@ -107,7 +107,7 @@ const PREVIEW = styled.div`
         letter-spacing: 3px;
       }
     }
-    .preview__info-others {
+    .data__info-others {
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -146,7 +146,7 @@ const HEADER = styled.div`
 
 const ACCESS_TOKEN = import.meta.env.VITE_API_ACCESS_TOKEN;
 
-const Preview = () => {
+const Data = () => {
   const { id, media_type: type } = useParams();
   const options = {
     method: "GET",
@@ -162,22 +162,21 @@ const Preview = () => {
     },
   };
 
-  const {
-    data: preview,
-    isLoading,
-    isError,
-    error,
-  } = useQuery(["Netflix Preview"], async () => {
-    const { data } = await Axios.request(options);
-    return data;
-  });
+  const { data, isLoading, isError, error } = useQuery(
+    ["Netflix data"],
+    async () => {
+      const { data } = await Axios.request(options);
+      return data;
+    }
+  );
+  // console.log(data);
   if (isLoading) return <div>Loading...</div>;
 
   return (
     <DIVISION>
-      <PREVIEW
-        className="preview"
-        background={`url(${backdrop}${preview?.backdrop_path})`}
+      <DATA
+        className="data"
+        background={`url(${backdrop}${data?.backdrop_path})`}
       >
         <HEADER>
           <div className="logo">
@@ -190,37 +189,35 @@ const Preview = () => {
             />
           </div>
         </HEADER>
-        <div className="preview__info">
-          <div className="preview__info-heading">
-            <p>{preview?.tagline}</p>
-            <h1>{preview?.name || preview?.title || preview?.original_name}</h1>
+        <div className="data__info">
+          <div className="data__info-heading">
+            <p>{data?.tagline}</p>
+            <h1>{data?.name || data?.title || data?.original_name}</h1>
             {type === "movie" ? (
               <p>
-                {preview?.runtime}min | {preview?.vote_average}
+                {data?.runtime}min | {data?.vote_average}
               </p>
             ) : (
-              <p>{preview?.vote_average}</p>
+              <p>{data?.vote_average}</p>
             )}
           </div>
-          <div className="preview__info-options">
+          <div className="data__info-options">
             <button>Play</button>
             <button>My List</button>
           </div>
-          <div className="preview__info-overview">
-            <h4>{preview?.overview}</h4>
+          <div className="data__info-overview">
+            <h4>{data?.overview}</h4>
           </div>
-          <div className="preview__info-others">
+          <div className="data__info-others">
             <p>{type === "movie" ? "Released" : "First Air"}</p>:
             <p>
-              {type === "movie"
-                ? preview?.release_date
-                : preview?.first_air_date}
+              {type === "movie" ? data?.release_date : data?.first_air_date}
             </p>
           </div>
         </div>
-      </PREVIEW>
+      </DATA>
     </DIVISION>
   );
 };
 
-export default Preview;
+export default Data;

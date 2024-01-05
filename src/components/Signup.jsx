@@ -50,13 +50,9 @@ const SIGNUP = styled.main`
       /* border: 2px solid yellow; */
       display: flex;
       align-items: center;
-      padding-left: 0.5rem;
+      padding-left: 01rem;
 
       cursor: pointer;
-
-      @media only screen and (min-width: 1024px) {
-        justify-content: center;
-      }
 
       img {
         width: 50%;

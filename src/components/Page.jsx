@@ -14,6 +14,10 @@ import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase-config";
 
 import logo from "../assets/logo.png";
+import logout from "../assets/logout.svg";
+import list from "../assets/list.svg";
+import search from "../assets/search.svg";
+import play from "../assets/play.svg";
 
 const Page = () => {
   const navigate = useNavigate();
@@ -55,20 +59,16 @@ const SCREEN = styled.section`
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     flex-wrap: wrap;
 
-    .nav_logo {
-      border: 2px solid yellow;
+    .nav_left {
+      /* border: 2px solid yellow; */
       display: flex;
       align-items: center;
-      padding-left: 0.5rem;
+      padding-left: 01rem;
 
       cursor: pointer;
-
-      @media only screen and (min-width: 1024px) {
-        justify-content: center;
-      }
 
       img {
         width: 50%;
@@ -78,94 +78,54 @@ const SCREEN = styled.section`
       }
     }
 
-    .nav_toggles {
-      flex: 1;
-      height: 100%;
-      border: 2px solid fuchsia;
-    }
+    .nav_right {
+      /* border: 2px solid greenyellow; */
+      padding: 0 1rem;
 
-    .nav_button {
-      border: 2px solid greenyellow;
-      padding: 0 0.75rem;
-
-      button {
-        color: #fff;
-        background: #d90429;
-
+      img:first-child {
         cursor: pointer;
-        font-size: 0.9rem;
-        padding: 0.4rem 1.05rem;
-
-        @media only screen and (min-width: 768px) {
-          font-size: 0.98rem;
-          padding: 0.4rem 1.12rem;
-        }
-
-        font-weight: 700;
-
-        font-family: "Netflix Sans", Helvetica;
-        border: none;
-        border-radius: 0.25rem;
+        margin: 0 3rem;
+      }
+      img {
+        cursor: pointer;
+        margin: 0 0.125rem;
       }
     }
   }
 
-  .screen_wrapper {
-    .screen {
-      border: 2px solid white;
-      width: 100%;
-      max-width: 90%;
-      margin: 2rem auto;
+  .screen {
+    border: 2px solid white;
+    width: 100%;
+    max-width: 90%;
+    margin: 2rem auto;
 
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
 
-      @media only screen and (min-width: 640px) {
-        margin: 5.5rem auto;
+    @media only screen and (min-width: 640px) {
+      margin: 5.5rem auto;
+    }
+    @media only screen and (min-width: 768px) {
+      margin: 5rem auto;
+    }
+
+    .screen_heading {
+      /* border: 2px solid red; */
+      /* width: 70%; */
+      strong {
+        font-family: "Netflix Sans";
+        font-size: clamp(1.75rem, 1.2985rem + 3.4398vw, 3.5rem);
+        /* text-transform: uppercase; */
+        font-weight: 800;
       }
-      @media only screen and (min-width: 768px) {
-        margin: 5rem auto;
-      }
+    }
+    .screen_buttons {
+      /* border: 2px solid green; */
+      padding: 0.75rem 0.3rem;
 
-      .screen_heading {
-        /* border: 2px solid red; */
-        /* width: 70%; */
-        strong {
-          font-family: "Netflix Sans";
-          font-size: clamp(1.75rem, 1.4275rem + 2.457vw, 3rem);
-          text-transform: uppercase;
-          font-weight: 800;
-        }
-      }
-      .screen_buttons {
-        /* border: 2px solid green; */
-        padding: 0.75rem 0.3rem;
-
-        button {
-          font-weight: 700;
-          font-size: 1.1em;
-          padding: 0.35em 1.5em;
-
-          background: rgba(51, 51, 51, 0.5);
-          color: ghostwhite;
-          cursor: pointer;
-
-          border: none;
-          outline: none;
-          border-radius: 4px;
-
-          @media only screen and (min-width: 640px) {
-            font-size: 1.25em;
-            padding: 0.34em 1.7em;
-          }
-
-          :hover {
-            color: #000;
-            background-color: #e6e6e6;
-            transition: all 1.35s;
-          }
-        }
+      img {
+        cursor: pointer;
       }
     }
   }
@@ -209,39 +169,42 @@ const Screen = () => {
     },
   };
 
-  const { data: screens, isLoading } = useQuery(
-    ["Netflix Screen"],
-    async () => {
-      const { data } = await Axios.request(options);
-      return data.results[0];
-      // return data.results[Math.floor(Math.random() * data.results.length - 1)];
-    }
-  );
+  const { data: page, isLoading } = useQuery(["Netflix Screen"], async () => {
+    const { data } = await Axios.request(options);
+    return data.results[Math.floor(Math.random() * data.results.length - 1)];
+  });
 
+  console.log(page);
   isLoading && <div>Loading...</div>;
 
   return (
-    <SCREEN background={`url(${backdrop}${screens?.backdrop_path})`}>
+    <SCREEN background={`url(${backdrop}${page?.backdrop_path})`}>
       <nav>
-        <div className="nav_logo">
+        <div className="nav_left">
           <img src={logo} alt="Flick" loading="lazy" />
         </div>
-        <div className="nav_toggles"></div>
-        <div className="nav_button">
-          <button onClick={toggleLogout}>Logout</button>
+        <div className="nav_right">
+          <img src={search} alt="Search" loading="lazy" />
+          {/* MY LIST  */}
+          <img src={list} alt="List" loading="lazy" />
+          <img
+            onClick={toggleLogout}
+            src={logout}
+            alt="Logout"
+            loading="lazy"
+          />
+          {/* ADD LOGGED_IN USER NAME CREDENTIALS */}
         </div>
       </nav>
-      <div className="screen_wrapper">
-        <div className="screen">
+      <div className="screen">
+        <div className="screen_one">
           <div className="screen_heading">
-            <strong>
-              {screens?.name || screens?.title || screens?.original_name}
-            </strong>
+            <strong>{page?.name || page?.title || page?.original_name}</strong>
           </div>
-          <div className="screen_buttons">
-            <button>Play</button>
-            {/* <button>My List</button> */}
-          </div>
+        </div>
+        <div className="screen_buttons">
+          <img src={play} alt="Play" loading="lazy" />
+          {/* <button>My List</button> */}
         </div>
       </div>
       <Row title="Originals" fetchUrl={requests.fetchOriginals} Originals />
