@@ -5,6 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import { baseUrl, poster, backdrop } from "../config/config";
 import { Link } from "react-router-dom";
 
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+
 import trending from "../assets/trending.svg";
 
 const ROW = styled.section`
@@ -21,6 +24,8 @@ const ROW = styled.section`
   }
 
   /* border: 2px solid green; */
+  height: 22.5rem;
+
   display: grid;
   grid-template-rows: auto auto;
   position: relative;
@@ -28,7 +33,7 @@ const ROW = styled.section`
   padding: 0 1rem;
 
   @media only screen and (min-width: 1024px) {
-    padding: 0 1rem 0 2.75rem;
+    height: 25.938rem;
   }
   /* border-top: 5px solid #2f4f4f; */
 
@@ -98,7 +103,8 @@ const ROW = styled.section`
   }
 
   div {
-    overflow-y: scroll;
+    overflow-y: hidden;
+    overflow-x: scroll;
     ::-webkit-scrollbar {
       display: none;
     }
@@ -161,45 +167,43 @@ const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
   return (
     <>
       <ROW background={backDrop && `url(${backdrop}${backDrop})`}>
-        <div>
-          <div className="row_header">
-            <div className="row_header-left">
-              <img src={trending} alt="Trends" loading="lazy" />
-              <div className="row_header-title">
-                <h1>{title}</h1>
-              </div>
+        <div className="row_header">
+          <div className="row_header-left">
+            <img src={trending} alt="Trends" loading="lazy" />
+            <div className="row_header-title">
+              <h1>{title}</h1>
             </div>
-            {Trending && (
-              <SliderToggle selected={selected} setSelected={setSelected} />
-            )}
           </div>
-          <div>
-            <div className="row_content">
-              {row?.map((collection) => {
-                // && collection?.media_type || collection?.first_air_date ? 'tv' : 'movie'
-                return (
-                  <Link
-                    key={collection?.id}
-                    to={`/${
-                      collection?.media_type === "tv" ||
-                      collection?.first_air_date
-                        ? "tv"
-                        : "movie"
-                    }/${collection?.id}/${collection?.name}`}
-                  >
-                    <img
-                      className="poster"
-                      src={`${poster}${collection?.poster_path}`}
-                      alt={collection?.name || "Image"}
-                      loading="lazy"
-                      onMouseEnter={() =>
-                        setBackDrop(InCinemas && collection?.backdrop_path)
-                      }
-                    />
-                  </Link>
-                );
-              })}
-            </div>
+          {Trending && (
+            <SliderToggle selected={selected} setSelected={setSelected} />
+          )}
+        </div>
+        <div>
+          <div className="row_content">
+            {row?.map((collection) => {
+              // && collection?.media_type || collection?.first_air_date ? 'tv' : 'movie'
+              return (
+                <Link
+                  key={collection?.id}
+                  to={`/${
+                    collection?.media_type === "tv" ||
+                    collection?.first_air_date
+                      ? "tv"
+                      : "movie"
+                  }/${collection?.id}/${collection?.name}`}
+                >
+                  <img
+                    className="poster"
+                    src={`${poster}${collection?.poster_path}`}
+                    alt={collection?.name || "Image"}
+                    loading="lazy"
+                    onMouseEnter={() =>
+                      setBackDrop(InCinemas && collection?.backdrop_path)
+                    }
+                  />
+                </Link>
+              );
+            })}
           </div>
         </div>
       </ROW>

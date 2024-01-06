@@ -11,7 +11,7 @@ const HOME = styled.div`
   /* border: 2px solid blue; */
   min-height: 100dvh;
   position: relative;
-  padding: 1rem 0;
+  padding: 1rem 0 0rem;
   /* font-family: "Netflix Sans", Helvetica; */
 
   display: grid;

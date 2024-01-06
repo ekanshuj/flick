@@ -169,7 +169,7 @@ const Data = () => {
       return data;
     }
   );
-  // console.log(data);
+  console.log(data);
   if (isLoading) return <div>Loading...</div>;
 
   return (

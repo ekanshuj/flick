@@ -21,6 +21,7 @@ import play from "../assets/play.svg";
 
 const Page = () => {
   const navigate = useNavigate();
+
   useEffect(() => {
     !cookies.get("user") && navigate("/");
   }, []);
@@ -97,17 +98,18 @@ const SCREEN = styled.section`
     border: 2px solid white;
     width: 100%;
     max-width: 90%;
-    margin: 2rem auto;
+    margin: 3rem auto;
 
     display: flex;
     align-items: flex-start;
     flex-direction: column;
 
-    @media only screen and (min-width: 640px) {
-      margin: 5.5rem auto;
-    }
     @media only screen and (min-width: 768px) {
-      margin: 5rem auto;
+      margin: 4rem auto;
+    }
+
+    @media only screen and (min-width: 1024px) {
+      margin: 4.5 auto;
     }
 
     .screen_heading {
@@ -118,6 +120,12 @@ const SCREEN = styled.section`
         font-size: clamp(1.75rem, 1.2985rem + 3.4398vw, 3.5rem);
         /* text-transform: uppercase; */
         font-weight: 800;
+      }
+      hr {
+        width: 15%;
+        height: 3px;
+        background: #efe4e2;
+        margin: 0.2rem 0.25rem;
       }
     }
     .screen_buttons {
@@ -200,7 +208,13 @@ const Screen = () => {
         <div className="screen_one">
           <div className="screen_heading">
             <strong>{page?.name || page?.title || page?.original_name}</strong>
+            <hr />
           </div>
+        </div>
+        <div className="screen_two">
+          <p>{page?.vote_average} / 10</p>
+          <p>{page?.first_air_date}</p>
+          <p>{page?.popularity} P</p>
         </div>
         <div className="screen_buttons">
           <img src={play} alt="Play" loading="lazy" />
