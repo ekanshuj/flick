@@ -9,10 +9,11 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 import background from "../assets/background.jpg";
 import logo from "../assets/logo.png";

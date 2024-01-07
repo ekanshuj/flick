@@ -53,9 +53,9 @@ const ROW = styled.section`
       /* border: 2px solid fuchsia; */
 
       .row_header-title {
-        h1 {
+        strong {
           font-weight: 400;
-          font-size: clamp(1.3rem, 1.2355rem + 0.4914vw, 1.55rem);
+          font-size: clamp(1.3rem, 1.2484rem + 0.3931vw, 1.5rem);
         }
       }
     }
@@ -171,7 +171,7 @@ const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
           <div className="row_header-left">
             <img src={trending} alt="Trends" loading="lazy" />
             <div className="row_header-title">
-              <h1>{title}</h1>
+              <strong>{title}</strong>
             </div>
           </div>
           {Trending && (
