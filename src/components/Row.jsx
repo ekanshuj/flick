@@ -32,19 +32,20 @@ const ROW = styled.section`
 
   padding: 0 1rem;
 
-  @media only screen and (min-width: 1024px) {
+  @media only screen and (min-width: 768px) {
     height: 25.938rem;
   }
   /* border-top: 5px solid #2f4f4f; */
 
   .row_header {
-    margin: 1rem 0;
-    width: 100%;
-    padding-inline: 0.6rem;
     /* border: 2px solid green; */
+    width: 100%;
+
+    padding-inline: 0.6rem;
+
     display: flex;
     flex-direction: column;
-    row-gap: 0.5rem;
+    row-gap: 0.15rem;
 
     .row_header-left {
       display: flex;
@@ -181,7 +182,6 @@ const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
         <div>
           <div className="row_content">
             {row?.map((collection) => {
-              // && collection?.media_type || collection?.first_air_date ? 'tv' : 'movie'
               return (
                 <Link
                   key={collection?.id}

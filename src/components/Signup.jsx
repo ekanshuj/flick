@@ -58,7 +58,7 @@ const SIGNUP = styled.main`
       img {
         width: 50%;
         @media only screen and (min-width: 768px) {
-          width: 60%;
+          width: 55%;
         }
       }
     }

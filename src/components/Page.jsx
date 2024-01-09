@@ -77,7 +77,7 @@ const SCREEN = styled.section`
       img {
         width: 4.75rem;
         @media only screen and (min-width: 768px) {
-          width: 60%;
+          width: 55%;
         }
       }
     }
@@ -115,7 +115,7 @@ const SCREEN = styled.section`
       margin: 4.5 auto 2rem;
     }
 
-    .screen_texts {
+    .screen_details {
       /* border: 2px solid red; */
       /* width: 70%; */
       .heading {
@@ -133,13 +133,8 @@ const SCREEN = styled.section`
         }
 
         display: flex;
-        /* row-gap: 1rem; */
-        flex-direction: column;
-
-        @media only screen and (min-width: 410px) {
-          flex-direction: row;
-          column-gap: 1rem;
-        }
+        flex-wrap: wrap;
+        column-gap: 1rem;
 
         margin: 0.2rem 0.25rem 1rem;
         padding: 0.25rem 0;
@@ -177,14 +172,30 @@ const SCREEN = styled.section`
       /* border: 2px solid green; */
       padding: 0.75rem 0.3rem;
 
-      img {
+      button {
+        color: #fff;
+        background: #d90429;
+
         cursor: pointer;
+        font-size: 1rem;
+        padding: 0.375rem 1rem;
+
+        @media only screen and (min-width: 768px) {
+          font-size: 01.1rem;
+          padding: 0.4rem 1.12rem;
+        }
+
+        font-weight: 700;
+
+        font-family: "Netflix Sans", Helvetica;
+        border: none;
+        border-radius: 0.25rem;
       }
     }
   }
 
   .video {
-    margin: 2rem;
+    padding: 2rem;
     border-radius: 0.2rem;
     left: 0;
     right: 0;
@@ -192,7 +203,7 @@ const SCREEN = styled.section`
     height: 100dvh;
     position: absolute;
     z-index: 99;
-    background: black;
+    background: fuchsia;
   }
 `;
 
@@ -200,6 +211,7 @@ const ACCESS_TOKEN = import.meta.env.VITE_API_ACCESS_TOKEN;
 
 const Screen = () => {
   const navigate = useNavigate();
+
   const [toggle, setToggle] = React.useState(false);
 
   const toggleLogout = async () => {
@@ -250,7 +262,7 @@ const Screen = () => {
         </div>
       </nav>
       <div className="screen">
-        <div className="screen_texts">
+        <div className="screen_details">
           <strong className="heading">
             {page?.name || page?.title || page?.original_name}
           </strong>
@@ -265,11 +277,20 @@ const Screen = () => {
           </div>
         </div>
         <div className="screen_buttons">
-          <img src={play} alt="Play" loading="lazy" />
-          {/* <button>My List</button> */}
+          <button>
+            <strong>My List</strong>
+          </button>
         </div>
       </div>
-      {/* <div className="video"></div> */}
+      {/* <div className="video">
+        <ReactPlayer
+          controls
+          pip
+          width="100%"
+          height="100%"
+          url="https://www.youtube.com/watch?v=ZONoMgeGAbI"
+        />
+      </div> */}
       <Row title="Originals" fetchUrl={requests.fetchOriginals} Originals />
     </SCREEN>
   );

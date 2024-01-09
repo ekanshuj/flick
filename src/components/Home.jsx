@@ -11,7 +11,6 @@ const HOME = styled.div`
   /* border: 2px solid blue; */
   min-height: 100dvh;
   position: relative;
-  padding: 1rem 0 0rem;
   /* font-family: "Netflix Sans", Helvetica; */
 
   display: grid;
@@ -37,6 +36,8 @@ const HOME = styled.div`
 
   nav {
     /* border: 2px solid green; */
+    padding: 0.5rem 0;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -53,7 +54,7 @@ const HOME = styled.div`
       img {
         width: 4.75rem;
         @media only screen and (min-width: 768px) {
-          width: 60%;
+          width: 55%;
         }
       }
     }
