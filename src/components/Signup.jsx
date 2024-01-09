@@ -41,7 +41,7 @@ const SIGNUP = styled.main`
 
   nav {
     /* border: 2px solid green; */
-    padding: 1rem 0;
+    padding: 0.5rem 0;
 
     display: flex;
     align-items: center;
@@ -56,7 +56,7 @@ const SIGNUP = styled.main`
       cursor: pointer;
 
       img {
-        width: 50%;
+        width: 4.75rem;
         @media only screen and (min-width: 768px) {
           width: 55%;
         }

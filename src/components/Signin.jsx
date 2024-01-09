@@ -15,7 +15,7 @@ import background from "../assets/background.jpg";
 import logo from "../assets/logo.png";
 
 const SIGNIN = styled.main`
-  min-height: 100vh;
+  height: 100dvh;
   position: relative;
 
   display: grid;
@@ -37,7 +37,7 @@ const SIGNIN = styled.main`
 
   nav {
     /* border: 2px solid green; */
-    padding: 1rem 0;
+    padding: 0.5rem 0;
 
     display: flex;
     align-items: center;
@@ -52,7 +52,7 @@ const SIGNIN = styled.main`
       cursor: pointer;
 
       img {
-        width: 50%;
+        width: 4.75rem;
         @media only screen and (min-width: 768px) {
           width: 55%;
         }

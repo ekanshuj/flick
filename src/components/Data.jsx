@@ -85,13 +85,22 @@ const DATA = styled.div`
     .container {
       /* border: 2px solid white; */
       width: 100%;
+      padding-inline: 0.5rem;
 
       @media only screen and (min-width: 640px) {
         margin-inline: 1.5rem;
+        padding-inline: 0;
       }
 
       .container_title {
-        font-size: clamp(1.75rem, 1.2985rem + 3.4398vw, 3.5rem);
+        strong {
+          font-size: clamp(1.75rem, 1.2985rem + 3.4398vw, 3.5rem);
+        }
+
+        p {
+          padding-inline: 0.125rem;
+          letter-spacing: 3px;
+        }
       }
 
       .container_metadata {
@@ -106,8 +115,13 @@ const DATA = styled.div`
         flex-wrap: wrap;
         column-gap: 1rem;
 
-        margin: 0.25rem 0.25rem 1.05rem;
+        margin: 0.75rem 0.25rem 1.05rem;
         padding: 0.25rem 0;
+
+        .genre {
+          display: flex;
+          column-gap: 0.35rem;
+        }
       }
 
       .container_details {
@@ -123,11 +137,20 @@ const DATA = styled.div`
 
         .creators {
           margin-block: 1rem;
-          p {
-            font-size: 1rem;
 
-            @media only screen and (min-width: 1024px) {
-              font-size: 1.15rem;
+          strong {
+            font-size: 1.1rem;
+            text-decoration: underline;
+          }
+
+          div {
+            margin-block: 0.25rem;
+            p {
+              font-size: 1rem;
+
+              @media only screen and (min-width: 1024px) {
+                font-size: 1.15rem;
+              }
             }
           }
         }
@@ -161,7 +184,6 @@ const Data = () => {
       return data;
     }
   );
-  // console.log(data?.genres[0].name);
   console.log(data);
   if (isLoading) return <div>Loading...</div>;
 
@@ -191,25 +213,42 @@ const Data = () => {
           </picture>
         </div>
         <div className="container">
-          <strong className="container_title">{data?.original_name}</strong>
+          <div className="container_title">
+            <strong>{data?.original_name || data?.original_title}</strong>
+            <p>{data?.tagline}</p>
+          </div>
           <div className="container_metadata">
-            <p>{data?.first_air_date}</p>
+            <p>{data?.first_air_date || data?.release_date}</p>
             <p>{data?.vote_average}</p>
-            <p>{data?.number_of_seasons} Season</p>
             <p>
-              {data?.genres[0]?.name} . {data?.genres[1]?.name} .{" "}
-              {data?.genres[2]?.name}
+              {type === "tv" ? data?.number_of_seasons : data?.popularity}{" "}
+              {type === "tv" ? "Season" : "P"}
             </p>
+            <div className="genre">
+              {data?.genres.map((genre, i) => {
+                return <p key={i}>{genre?.name}</p>;
+              })}
+            </div>
           </div>
           <div className="container_details">
             <div className="info">
               <p>{data?.overview}</p>
             </div>
             <div className="creators">
-              <p>
-                <strong>Created by</strong> : {data?.created_by[0]?.name} ,{" "}
-                {data?.created_by[1]?.name}
-              </p>
+              <strong>Created by</strong> :
+              <div>
+                {data?.created_by
+                  ? data?.created_by.map((elem, i) => {
+                      return <p key={i}>{elem?.name}</p>;
+                    })
+                  : data?.production_companies
+                  ? data?.production_companies.map((elem, i) => {
+                      return <p key={i}>{elem?.name}</p>;
+                    })
+                  : (!data?.created_by || data?.production_companies) && (
+                      <p>No data available.</p>
+                    )}
+              </div>
             </div>
           </div>
         </div>

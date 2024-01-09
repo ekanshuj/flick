@@ -23,18 +23,19 @@ const ROW = styled.section`
     opacity: 0.2;
   }
 
-  /* border: 2px solid green; */
-  height: 22.5rem;
-
   display: grid;
   grid-template-rows: auto auto;
+  row-gap: ${(props) => (props.$in === true ? ".75rem" : ".5rem")};
   position: relative;
 
-  padding: 0 1rem;
+  height: ${(props) => (props.$in === true ? "19.2rem" : "auto")};
 
   @media only screen and (min-width: 768px) {
-    height: 25.938rem;
+    height: ${(props) => (props.$in === true ? "22.2rem" : "auto")};
   }
+
+  padding: 0 1rem;
+  margin-block: 1.5rem;
   /* border-top: 5px solid #2f4f4f; */
 
   .row_header {
@@ -45,6 +46,7 @@ const ROW = styled.section`
 
     display: flex;
     flex-direction: column;
+    justify-content: center;
     row-gap: 0.15rem;
 
     .row_header-left {
@@ -117,9 +119,9 @@ const ROW = styled.section`
         border-radius: 0.5rem;
         cursor: pointer;
 
-        width: 9.5rem;
+        width: 9rem;
         @media only screen and (min-width: 768px) {
-          width: 12.5rem;
+          width: 11rem;
         }
 
         margin-inline: 0.6rem;
@@ -160,14 +162,17 @@ const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
     return data.results;
   });
 
-  // console.log(row);
+  console.log(row);
 
   isLoading && <div>Loading...</div>;
   isError && console.log(error.message);
 
   return (
     <>
-      <ROW background={backDrop && `url(${backdrop}${backDrop})`}>
+      <ROW
+        $in={!cookies.get("user") === true ? true : false}
+        background={backDrop && `url(${backdrop}${backDrop})`}
+      >
         <div className="row_header">
           <div className="row_header-left">
             <img src={trending} alt="Trends" loading="lazy" />
@@ -190,7 +195,9 @@ const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
                     collection?.first_air_date
                       ? "tv"
                       : "movie"
-                  }/${collection?.id}/${collection?.name}`}
+                  }/${collection?.id}/${
+                    collection?.original_name || collection?.original_title
+                  }`}
                 >
                   <img
                     className="poster"
