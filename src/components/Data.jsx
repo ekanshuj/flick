@@ -154,6 +154,10 @@ const DATA = styled.div`
             }
           }
         }
+
+        .null_data {
+          display: none;
+        }
       }
     }
   }
@@ -185,6 +189,7 @@ const Data = () => {
     }
   );
   console.log(data);
+
   if (isLoading) return <div>Loading...</div>;
 
   return (
@@ -234,20 +239,22 @@ const Data = () => {
             <div className="info">
               <p>{data?.overview}</p>
             </div>
-            <div className="creators">
+            <div
+              className={`creators ${
+                (data?.created_by.length === 0 ||
+                  data?.production_companies.length === 0) &&
+                "null_data"
+              }`}
+            >
               <strong>Created by</strong> :
               <div>
                 {data?.created_by
                   ? data?.created_by.map((elem, i) => {
                       return <p key={i}>{elem?.name}</p>;
                     })
-                  : data?.production_companies
-                  ? data?.production_companies.map((elem, i) => {
+                  : data?.production_companies.map((elem, i) => {
                       return <p key={i}>{elem?.name}</p>;
-                    })
-                  : (!data?.created_by || data?.production_companies) && (
-                      <p>No data available.</p>
-                    )}
+                    })}
               </div>
             </div>
           </div>
