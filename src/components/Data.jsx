@@ -169,7 +169,7 @@ const Data = () => {
   const navigate = useNavigate();
 
   const { id, media_type: type } = useParams();
-  const options = {
+  const optionsData = {
     method: "GET",
     url: `${baseUrl}/${type}/${id}`,
     params: {
@@ -181,13 +181,37 @@ const Data = () => {
     },
   };
 
-  const { data, isLoading, isError, error } = useQuery(
-    ["Netflix data"],
-    async () => {
-      const { data } = await Axios.request(options);
-      return data;
-    }
-  );
+  const optionsVideo = {
+    method: "GET",
+    url: `${baseUrl}/${type}/${id}`,
+    params: {
+      language: "en-US",
+    },
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${ACCESS_TOKEN}`,
+    },
+  };
+
+  const {
+    data,
+    isLoading: isLoadingData,
+    isError: isErrorData,
+    error: errorData,
+  } = useQuery(["Flick Data"], async () => {
+    const { data } = await Axios.request(optionsData);
+    return data;
+  });
+
+  const {
+    video,
+    isLoading: isLoadingVideo,
+    isError: isErrorVideo,
+    error: errorVideo,
+  } = useQuery(["Data Video"], async () => {
+    const { data } = await Axios.request(options);
+    return data;
+  });
   console.log(data);
 
   if (isLoading) return <div>Loading...</div>;
