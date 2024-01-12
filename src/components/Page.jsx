@@ -30,8 +30,7 @@ const Page = () => {
   return (
     <>
       <Screen />
-      {/* <Row title="In Cinemas" fetchUrl={requests.fetchNowPlaying} InCinemas /> */}
-      {/* <MOVIESANDTV /> */}
+      <MOVIESANDTV />
     </>
   );
 };
@@ -239,7 +238,20 @@ const Screen = () => {
     navigate("/signin");
   };
 
-  const options = {
+  // const searchOptions = {
+  //   method: "GET",
+  //   url: `${baseUrl}/search/multi?${query}`,
+  //   params: {
+  //     language: "en-US",
+  //     sort_by: "popularity.desc",
+  //   },
+  //   headers: {
+  //     accept: "application/json",
+  //     Authorization: `Bearer ${ACCESS_TOKEN}`,
+  //   },
+  // };
+
+  const pageOptions = {
     method: "GET",
     url: `${baseUrl}/${requests.fetchOriginals}`,
     params: {
@@ -253,13 +265,21 @@ const Screen = () => {
     },
   };
 
-  const { data: page, isLoading } = useQuery(["Netflix Screen"], async () => {
-    const { data } = await Axios.request(options);
-    return data.results[Math.floor(Math.random() * data.results.length - 1)];
-  });
+  // const { data: search, isLoading } = useQuery(["Netflix Screen"], async () => {
+  //   const { data } = await Axios.request(searchOptions);
+  //   return data.results[Math.floor(Math.random() * data.results.length - 1)];
+  // });
 
-  console.log(page);
-  isLoading && <div>Loading...</div>;
+  const { data: page, isLoading: isLoadingPage } = useQuery(
+    ["Netflix Screen"],
+    async () => {
+      const { data } = await Axios.request(pageOptions);
+      return data.results[Math.floor(Math.random() * data.results.length - 1)];
+    }
+  );
+
+  // console.log(page);
+  isLoadingPage && <div>Loading...</div>;
 
   return (
     <SCREEN background={`url(${backdrop}${page?.backdrop_path})`}>
@@ -323,8 +343,12 @@ const Screen = () => {
 const MOVIESANDTV = () => {
   return (
     <section>
-      <Row title="Movies" fetchUrl={requests.fetchNowPlaying} Movies />
-      <Row title="TV" fetchUrl={requests.fetchNowPlaying} TV />
+      {/* <Row
+        title="In Cinemas"
+        fetchUrl={requests.fetchMoviesInCinemas}
+        InCinemas
+      /> */}
+      {/* <Row title="Top Rated" fetchUrl={requests.fetchTopRatedMovies} /> */}
     </section>
   );
 };

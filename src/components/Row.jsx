@@ -24,7 +24,6 @@ const ROW = styled.section`
   }
 
   display: grid;
-  grid-template-rows: auto auto;
   row-gap: ${(props) => (props.$in === true ? ".75rem" : ".5rem")};
   position: relative;
 
@@ -34,7 +33,7 @@ const ROW = styled.section`
     height: ${(props) => (props.$in === true ? "22.2rem" : "auto")};
   }
 
-  padding: 0 1rem;
+  padding: ${(props) => (props.Backdrop ? "1.5rem 1rem" : "0 1rem")};
   margin-block: 1.5rem;
   /* border-top: 5px solid #2f4f4f; */
 
@@ -46,7 +45,6 @@ const ROW = styled.section`
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
     row-gap: 0.15rem;
 
     .row_header-left {
@@ -119,9 +117,9 @@ const ROW = styled.section`
         border-radius: 0.5rem;
         cursor: pointer;
 
-        width: 9rem;
+        width: ${(props) => (props.Backdrop ? "18rem" : "9rem")};
         @media only screen and (min-width: 768px) {
-          width: 11rem;
+          width: ${(props) => (props.Backdrop ? "22rem" : "11rem")};
         }
 
         margin-inline: 0.6rem;
@@ -132,7 +130,7 @@ const ROW = styled.section`
 
 const ACCESS_TOKEN = import.meta.env.VITE_API_ACCESS_TOKEN;
 
-const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
+const Row = ({ title, fetchUrl, Trending, Originals, InCinemas }) => {
   const [selected, setSelected] = React.useState("day");
   const [backDrop, setBackDrop] = React.useState(null);
 
@@ -162,7 +160,7 @@ const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
     return data.results;
   });
 
-  console.log(row);
+  // console.log(row);
 
   isLoading && <div>Loading...</div>;
   isError && console.log(error.message);
@@ -170,6 +168,7 @@ const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
   return (
     <>
       <ROW
+        Backdrop={InCinemas && true}
         $in={!cookies.get("user") === true ? true : false}
         background={backDrop && `url(${backdrop}${backDrop})`}
       >
@@ -201,7 +200,11 @@ const Row = ({ title, fetchUrl, Trending, InCinemas, Originals }) => {
                 >
                   <img
                     className="poster"
-                    src={`${poster}${collection?.poster_path}`}
+                    src={`${poster}${
+                      InCinemas
+                        ? collection?.backdrop_path
+                        : collection?.poster_path
+                    }`}
                     alt={collection?.name || "Image"}
                     loading="lazy"
                     onMouseEnter={() =>

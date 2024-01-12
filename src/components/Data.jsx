@@ -154,10 +154,6 @@ const DATA = styled.div`
             }
           }
         }
-
-        .null_data {
-          display: none;
-        }
       }
     }
   }
@@ -169,6 +165,7 @@ const Data = () => {
   const navigate = useNavigate();
 
   const { id, media_type: type } = useParams();
+
   const optionsData = {
     method: "GET",
     url: `${baseUrl}/${type}/${id}`,
@@ -183,7 +180,7 @@ const Data = () => {
 
   const optionsVideo = {
     method: "GET",
-    url: `${baseUrl}/${type}/${id}`,
+    url: `${baseUrl}/${type}/${id}/videos`,
     params: {
       language: "en-US",
     },
@@ -204,16 +201,24 @@ const Data = () => {
   });
 
   const {
-    video,
+    data: video,
     isLoading: isLoadingVideo,
     isError: isErrorVideo,
     error: errorVideo,
   } = useQuery(["Data Video"], async () => {
-    const { data } = await Axios.request(options);
-    return data;
+    const {
+      data: { results },
+    } = await Axios.request(optionsVideo);
+    return results?.length >= 2
+      ? results?.filter(
+          (result) => result?.name.includes("Trailer") && result?.name
+        )[0]
+      : results[0];
   });
-  console.log(data);
 
+  // console.log(video, `https://www.youtube.com/watch?v=${video?.key}`);
+
+  const isLoading = isLoadingData || isLoadingVideo;
   if (isLoading) return <div>Loading...</div>;
 
   return (
@@ -263,13 +268,7 @@ const Data = () => {
             <div className="info">
               <p>{data?.overview}</p>
             </div>
-            <div
-              className={`creators ${
-                (data?.created_by.length === 0 ||
-                  data?.production_companies.length === 0) &&
-                "null_data"
-              }`}
-            >
+            <div className="creators">
               <strong>Created by</strong> :
               <div>
                 {data?.created_by
