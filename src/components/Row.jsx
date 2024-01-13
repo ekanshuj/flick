@@ -33,7 +33,7 @@ const ROW = styled.section`
     height: ${(props) => (props.$in === true ? "22.2rem" : "auto")};
   }
 
-  padding: ${(props) => (props.Backdrop ? "1.5rem 1rem" : "0 1rem")};
+  padding: "0 1rem";
   margin-block: 1.5rem;
   /* border-top: 5px solid #2f4f4f; */
 
@@ -117,9 +117,9 @@ const ROW = styled.section`
         border-radius: 0.5rem;
         cursor: pointer;
 
-        width: ${(props) => (props.Backdrop ? "18rem" : "9rem")};
+        width: "9rem";
         @media only screen and (min-width: 768px) {
-          width: ${(props) => (props.Backdrop ? "22rem" : "11rem")};
+          width: "11rem";
         }
 
         margin-inline: 0.6rem;
@@ -130,9 +130,8 @@ const ROW = styled.section`
 
 const ACCESS_TOKEN = import.meta.env.VITE_API_ACCESS_TOKEN;
 
-const Row = ({ title, fetchUrl, Trending, Originals, InCinemas }) => {
+const Row = ({ title, fetchUrl, Trending, Originals }) => {
   const [selected, setSelected] = React.useState("day");
-  const [backDrop, setBackDrop] = React.useState(null);
 
   const options = {
     method: "GET",
@@ -168,7 +167,6 @@ const Row = ({ title, fetchUrl, Trending, Originals, InCinemas }) => {
   return (
     <>
       <ROW
-        Backdrop={InCinemas && true}
         $in={!cookies.get("user") === true ? true : false}
         background={backDrop && `url(${backdrop}${backDrop})`}
       >
@@ -200,16 +198,9 @@ const Row = ({ title, fetchUrl, Trending, Originals, InCinemas }) => {
                 >
                   <img
                     className="poster"
-                    src={`${poster}${
-                      InCinemas
-                        ? collection?.backdrop_path
-                        : collection?.poster_path
-                    }`}
+                    src={`${poster}${collection?.poster_path}`}
                     alt={collection?.name || "Image"}
                     loading="lazy"
-                    onMouseEnter={() =>
-                      setBackDrop(InCinemas && collection?.backdrop_path)
-                    }
                   />
                 </Link>
               );

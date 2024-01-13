@@ -343,11 +343,6 @@ const Screen = () => {
 const MOVIESANDTV = () => {
   return (
     <section>
-      {/* <Row
-        title="In Cinemas"
-        fetchUrl={requests.fetchMoviesInCinemas}
-        InCinemas
-      /> */}
       {/* <Row title="Top Rated" fetchUrl={requests.fetchTopRatedMovies} /> */}
     </section>
   );
