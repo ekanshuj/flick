@@ -1,13 +1,13 @@
-<h1>React Netflix Clone</h1>
+<h1>Flick</h1>
 
-This is a Netflix clone built with React, using Firebase for authentication, the TMDb API for data fetching and retrieval, and styled-components for styling.
+This is a Netflix inspired movie and tv shows data website built with React, Firebase, the TMDb API for data fetching and retrieval, and styled-components for styling.
 
 <h3>Installation</h3>
 
 To run this project locally, you can follow these steps:
 
 1. Clone this repository to your local machine
-2. Navigate to the project directory: <strong>`cd react-netflix`</strong>
+2. Navigate to the project directory: <strong>`cd flick`</strong>
 3. Install dependencies: <strong>`npm install`</strong>
 4. Create a .env file at the root of the project, and add your Firebase and TMDb API keys:
 
@@ -34,6 +34,7 @@ This project uses the following technologies:
 ● TMDb API<br>
 ● styled-components<br>
 ● Axios<br>
+● React Query<br>
 
 <h3>Contributing</h3>
 
