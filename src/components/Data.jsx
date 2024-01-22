@@ -240,7 +240,6 @@ const Data = () => {
 
   const {
     data: similars,
-    isLoading: isLoadingSimilars,
     isError: isErrorSimilars,
     error: errorSimilars,
   } = useQuery(["Flick_Data_Similars"], async () => {
@@ -250,15 +249,17 @@ const Data = () => {
     return results;
   });
 
-  const isLoading = isLoadingData || isLoadingVideo;
-  if (isLoading) return <div>Loading...</div>;
+  const isError = isErrorData || isErrorSimilars || isErrorVideo;
+  const error = errorData || errorSimilars || errorVideo;
+
+  isError && console.log(error);
 
   return (
     <DATA>
       <nav>
         <div className="nav_left">
           <img
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
             src={logo}
             alt="Flick"
             loading="lazy"

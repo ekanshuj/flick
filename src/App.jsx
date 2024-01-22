@@ -2,6 +2,8 @@ import React, { useEffect, lazy, Suspense } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import BarLoader from "react-spinners/BarLoader";
+
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
@@ -19,6 +21,10 @@ const client = new QueryClient({
   },
 });
 
+const override = {
+  margin: ".5rem auto",
+};
+
 const App = () => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -29,7 +35,17 @@ const App = () => {
   return (
     <QueryClientProvider client={client}>
       <main className="app">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+          fallback={
+            <BarLoader
+              color="#EFE4E2"
+              loading
+              cssOverride={override}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          }
+        >
           <Routes>
             <Route
               path="/"

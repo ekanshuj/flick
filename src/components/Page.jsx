@@ -12,7 +12,6 @@ import Axios from "axios";
 import { baseUrl, backdrop } from "../config/config";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase-config";
-import ReactPlayer from "react-player/lazy";
 
 import logo from "../assets/logo.png";
 import logout from "../assets/logout.svg";
@@ -113,7 +112,7 @@ const SCREEN = styled.section`
         margin: 3.5rem auto 7rem;
       }
       @media only screen and (min-width: 960px) {
-        margin: 3.5rem auto 8rem;
+        margin: 4.5rem auto 8rem;
       }
 
       .screen_details {
@@ -312,8 +311,6 @@ const Screen = () => {
   // });
 
   console.log(page);
-  const isLoading = isLoadingPage || isLoadingVideo;
-  isLoading && <div>Loading...</div>;
 
   return (
     <SCREEN background={`url(${backdrop}${page?.backdrop_path})`}>

@@ -4,6 +4,7 @@ import Axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { baseUrl, poster, backdrop } from "../config/config";
 import { Link } from "react-router-dom";
+import BarLoader from "react-spinners/BarLoader";
 
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
@@ -159,10 +160,21 @@ const Row = ({ title, fetchUrl, Trending, Originals }) => {
     return data.results;
   });
 
-  // console.log(row);
+  const override = {
+    margin: ".5rem auto",
+  };
 
-  isLoading && <div>Loading...</div>;
+  // console.log(row);
   isError && console.log(error.message);
+  isLoading && (
+    <BarLoader
+      color="#EFE4E2"
+      loading
+      cssOverride={override}
+      aria-label="Loading Spinner"
+      data-testid="loader"
+    />
+  );
 
   return (
     <>
