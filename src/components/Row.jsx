@@ -117,9 +117,9 @@ const ROW = styled.section`
         border-radius: 0.5rem;
         cursor: pointer;
 
-        width: "9rem";
+        width: 9rem;
         @media only screen and (min-width: 768px) {
-          width: "11rem";
+          width: 11rem;
         }
 
         margin-inline: 0.6rem;
@@ -154,7 +154,7 @@ const Row = ({ title, fetchUrl, Trending, Originals }) => {
     isLoading,
     error,
     isError,
-  } = useQuery(["Netflix Row", selected], async () => {
+  } = useQuery(["Flick_Rows", selected], async () => {
     const { data } = await Axios.request(options);
     return data.results;
   });
@@ -166,10 +166,7 @@ const Row = ({ title, fetchUrl, Trending, Originals }) => {
 
   return (
     <>
-      <ROW
-        $in={!cookies.get("user") === true ? true : false}
-        background={backDrop && `url(${backdrop}${backDrop})`}
-      >
+      <ROW $in={!cookies.get("user") === true ? true : false}>
         <div className="row_header">
           <div className="row_header-left">
             <img src={trending} alt="Trends" loading="lazy" />

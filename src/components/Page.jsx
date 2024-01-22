@@ -172,6 +172,9 @@ const SCREEN = styled.section`
       .screen_buttons {
         /* border: 2px solid green; */
         padding: 0.75rem 0.3rem;
+        display: flex;
+        align-items: center;
+        column-gap: 0.5rem;
 
         button {
           color: #fff;
@@ -265,21 +268,52 @@ const Screen = () => {
     },
   };
 
-  // const { data: search, isLoading } = useQuery(["Netflix Screen"], async () => {
-  //   const { data } = await Axios.request(searchOptions);
-  //   return data.results[Math.floor(Math.random() * data.results.length - 1)];
-  // });
-
   const { data: page, isLoading: isLoadingPage } = useQuery(
-    ["Netflix Screen"],
+    ["Flick_HomePage"],
     async () => {
       const { data } = await Axios.request(pageOptions);
       return data.results[Math.floor(Math.random() * data.results.length - 1)];
     }
   );
 
-  // console.log(page);
-  isLoadingPage && <div>Loading...</div>;
+  const optionsVideo = {
+    method: "GET",
+    url: `${baseUrl}/tv/${page?.id}/videos`,
+    params: {
+      language: "en-US",
+    },
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${ACCESS_TOKEN}`,
+    },
+  };
+
+  const {
+    data: video,
+    isLoading: isLoadingVideo,
+    isError: isErrorVideo,
+    error: errorVideo,
+  } = useQuery(["Flick_Data_Videos"], async () => {
+    const {
+      data: { results },
+    } = await Axios.request(optionsVideo);
+    return results?.length >= 2
+      ? results?.filter(
+          (result) => result?.name.includes("Trailer") && result?.name
+        )[0]
+      : results[0];
+  });
+
+  console.log(video);
+
+  // const { data: search, isLoading } = useQuery(["Netflix Screen"], async () => {
+  //   const { data } = await Axios.request(searchOptions);
+  //   return data.results[Math.floor(Math.random() * data.results.length - 1)];
+  // });
+
+  console.log(page);
+  const isLoading = isLoadingPage || isLoadingVideo;
+  isLoading && <div>Loading...</div>;
 
   return (
     <SCREEN background={`url(${backdrop}${page?.backdrop_path})`}>
@@ -317,6 +351,12 @@ const Screen = () => {
             </div>
           </div>
           <div className="screen_buttons">
+            <a
+              target="_blank"
+              href={`https://www.youtube.com/watch?v=${video?.key}`}
+            >
+              <img src={play} alt="Play" loading="lazy" />
+            </a>
             <button>
               <strong>My List</strong>
             </button>

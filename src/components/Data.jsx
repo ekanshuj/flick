@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { backdrop, baseUrl, poster } from "../config/config";
 
 import logo from "../assets/logo.png";
+import play from "../assets/play.svg";
 
 const DATA = styled.div`
   min-height: 100vh;
@@ -70,7 +71,16 @@ const DATA = styled.div`
     }
 
     .image_container {
-      /* max-width: 100%; */
+      position: relative;
+      opacity: 0.7;
+      .image_container-mask {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        cursor: pointer;
+        z-index: 9;
+      }
 
       @media only screen and (min-width: 410px) {
         margin-inline: 1rem;
@@ -190,12 +200,24 @@ const Data = () => {
     },
   };
 
+  const optionsSimilars = {
+    method: "GET",
+    url: `${baseUrl}/${type}/${id}/similar`,
+    params: {
+      language: "en-US",
+    },
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${ACCESS_TOKEN}`,
+    },
+  };
+
   const {
     data,
     isLoading: isLoadingData,
     isError: isErrorData,
     error: errorData,
-  } = useQuery(["Flick Data"], async () => {
+  } = useQuery(["Flick_Data"], async () => {
     const { data } = await Axios.request(optionsData);
     return data;
   });
@@ -205,7 +227,7 @@ const Data = () => {
     isLoading: isLoadingVideo,
     isError: isErrorVideo,
     error: errorVideo,
-  } = useQuery(["Data Video"], async () => {
+  } = useQuery(["Flick_Data_Videos"], async () => {
     const {
       data: { results },
     } = await Axios.request(optionsVideo);
@@ -216,7 +238,17 @@ const Data = () => {
       : results[0];
   });
 
-  // console.log(video, `https://www.youtube.com/watch?v=${video?.key}`);
+  const {
+    data: similars,
+    isLoading: isLoadingSimilars,
+    isError: isErrorSimilars,
+    error: errorSimilars,
+  } = useQuery(["Flick_Data_Similars"], async () => {
+    const {
+      data: { results },
+    } = await Axios.request(optionsSimilars);
+    return results;
+  });
 
   const isLoading = isLoadingData || isLoadingVideo;
   if (isLoading) return <div>Loading...</div>;
@@ -245,6 +277,14 @@ const Data = () => {
               alt={`${data?.original_name}`}
             />
           </picture>
+          <div className="image_container-mask">
+            <a
+              target="_blank"
+              href={`https://www.youtube.com/watch?v=${video?.key}`}
+            >
+              <img src={play} alt="Play" loading="lazy" />
+            </a>
+          </div>
         </div>
         <div className="container">
           <div className="container_title">
