@@ -13,6 +13,13 @@ import { baseUrl, backdrop } from "../config/config";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase-config";
 
+import algoliasearch from "algoliasearch/lite";
+import { InstantSearch, SearchBox, Hits } from "react-instantsearch";
+const searchClient = algoliasearch(
+  import.meta.env.VITE_ALGOLIA_APPLICATION_ID,
+  import.meta.env.VITE_ALGOLIA_SEARCH_ONLY_API_KEY
+);
+
 import logo from "../assets/logo.png";
 import logout from "../assets/logout.svg";
 import list from "../assets/list.svg";
@@ -38,6 +45,21 @@ const Page = () => {
 const SCREEN = styled.section`
   min-height: 100vh;
   color: ghostwhite;
+  position: relative;
+
+  .search {
+    height: 100dvh;
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    margin: 02rem 1.25rem;
+    z-index: 999;
+    border-radius: 1rem;
+
+    @media only screen and (min-width: 640px) {
+      margin: 3rem 5rem;
+    }
+  }
 
   .wrapper {
     /* border: 2px solid greenyellow; */
@@ -240,18 +262,14 @@ const Screen = () => {
     navigate("/signin");
   };
 
-  // const searchOptions = {
-  //   method: "GET",
-  //   url: `${baseUrl}/search/multi?${query}`,
-  //   params: {
-  //     language: "en-US",
-  //     sort_by: "popularity.desc",
-  //   },
-  //   headers: {
-  //     accept: "application/json",
-  //     Authorization: `Bearer ${ACCESS_TOKEN}`,
-  //   },
-  // };
+  const {
+    data: page,
+    isError: isErrorPage,
+    error: errorPage,
+  } = useQuery(["Flick_HomePage"], async () => {
+    const { data } = await Axios.request(pageOptions);
+    return data.results[Math.floor(Math.random() * data.results.length - 1)];
+  });
 
   const pageOptions = {
     method: "GET",
@@ -267,13 +285,18 @@ const Screen = () => {
     },
   };
 
-  const { data: page, isLoading: isLoadingPage } = useQuery(
-    ["Flick_HomePage"],
-    async () => {
-      const { data } = await Axios.request(pageOptions);
-      return data.results[Math.floor(Math.random() * data.results.length - 1)];
-    }
-  );
+  const SearchOptions = {
+    method: "GET",
+    url: `${baseUrl}/search/multi?query=john`,
+    params: {
+      language: "en-US",
+      sort_by: "popularity.desc",
+    },
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${ACCESS_TOKEN}`,
+    },
+  };
 
   const optionsVideo = {
     method: "GET",
@@ -289,7 +312,6 @@ const Screen = () => {
 
   const {
     data: video,
-    isLoading: isLoadingVideo,
     isError: isErrorVideo,
     error: errorVideo,
   } = useQuery(["Flick_Data_Videos"], async () => {
@@ -303,17 +325,33 @@ const Screen = () => {
       : results[0];
   });
 
-  console.log(video);
+  const {
+    data: Search,
+    isError: isErrorSearch,
+    error: errorSearch,
+  } = useQuery(["Flick_Search"], async () => {
+    const {
+      data: { results },
+    } = await Axios.request(SearchOptions);
+    return results?.filter(
+      (result) => result?.media_type === "tv" || result?.media_type === "movie"
+    );
+  });
 
-  // const { data: search, isLoading } = useQuery(["Netflix Screen"], async () => {
-  //   const { data } = await Axios.request(searchOptions);
-  //   return data.results[Math.floor(Math.random() * data.results.length - 1)];
-  // });
+  const isError = isErrorPage || isErrorSearch || isErrorVideo;
+  const error = errorPage || errorSearch || errorVideo;
 
-  console.log(page);
+  isError && console.log(error);
+  console.log(Search);
 
   return (
     <SCREEN background={`url(${backdrop}${page?.backdrop_path})`}>
+      <div className="search">
+        <InstantSearch searchClient={searchClient} indexName="instant_search">
+          <SearchBox />
+          <Hits />
+        </InstantSearch>
+      </div>
       <div className="wrapper">
         <nav>
           <div className="nav_left">

@@ -214,7 +214,6 @@ const Data = () => {
 
   const {
     data,
-    isLoading: isLoadingData,
     isError: isErrorData,
     error: errorData,
   } = useQuery(["Flick_Data"], async () => {
@@ -224,7 +223,6 @@ const Data = () => {
 
   const {
     data: video,
-    isLoading: isLoadingVideo,
     isError: isErrorVideo,
     error: errorVideo,
   } = useQuery(["Flick_Data_Videos"], async () => {
