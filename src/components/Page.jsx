@@ -12,19 +12,14 @@ import Axios from "axios";
 import { baseUrl, backdrop } from "../config/config";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase-config";
-
-import algoliasearch from "algoliasearch/lite";
-import { InstantSearch, SearchBox, Hits } from "react-instantsearch";
-const searchClient = algoliasearch(
-  import.meta.env.VITE_ALGOLIA_APPLICATION_ID,
-  import.meta.env.VITE_ALGOLIA_SEARCH_ONLY_API_KEY
-);
+import ReactSearchBox from "react-search-box";
 
 import logo from "../assets/logo.png";
 import logout from "../assets/logout.svg";
 import list from "../assets/list.svg";
 import search from "../assets/search.svg";
 import play from "../assets/play.svg";
+import movie from "../assets/movie.svg";
 
 const Page = () => {
   const navigate = useNavigate();
@@ -51,10 +46,16 @@ const SCREEN = styled.section`
     height: 100dvh;
     position: absolute;
     inset: 0;
-    background: #fff;
+    background: radial-gradient(
+      circle at 24.1% 68.8%,
+      rgb(0, 0, 0) 0%,
+      #171717 50%,
+      rgb(0, 0, 0) 99.4%
+    );
     margin: 02rem 1.25rem;
+    padding: 0.35rem;
     z-index: 999;
-    border-radius: 1rem;
+    border-radius: 0.35rem;
 
     @media only screen and (min-width: 640px) {
       margin: 3rem 5rem;
@@ -326,7 +327,7 @@ const Screen = () => {
   });
 
   const {
-    data: Search,
+    data: searches,
     isError: isErrorSearch,
     error: errorSearch,
   } = useQuery(["Flick_Search"], async () => {
@@ -342,15 +343,22 @@ const Screen = () => {
   const error = errorPage || errorSearch || errorVideo;
 
   isError && console.log(error);
-  console.log(Search);
+  console.log(searches);
 
   return (
     <SCREEN background={`url(${backdrop}${page?.backdrop_path})`}>
       <div className="search">
-        <InstantSearch searchClient={searchClient} indexName="instant_search">
-          <SearchBox />
-          <Hits />
-        </InstantSearch>
+        <ReactSearchBox
+          placeholder="Search TV or Movies"
+          value="Doe"
+          data={searches}
+          callback={(record) => console.log(record)}
+          clearOnSelect
+          inputFontSize="1.075rem"
+          inputHeight="3rem"
+          leftIcon={<img src={movie} loading="lazy" />}
+          iconBoxSize={"48px"}
+        />
       </div>
       <div className="wrapper">
         <nav>
