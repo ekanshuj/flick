@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { requests } from "../config";
-import { Row } from ".";
+import { Row, Searches } from ".";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const Page = () => {
   return (
     <>
       <Screen />
-      <MOVIESANDTV />
+      {/* <MOVIESANDTV /> */}
     </>
   );
 };
@@ -45,15 +45,15 @@ const SCREEN = styled.section`
 
   .searches {
     height: 100dvh;
-    /* height: max-content; */
     position: absolute;
     inset: 0;
-    background: radial-gradient(
+    background: #fff;
+    /* background: radial-gradient(
       circle at 24.1% 68.8%,
       rgb(0, 0, 0) 0%,
       #171717 50%,
       rgb(0, 0, 0) 99.4%
-    );
+    ); */
     max-width: 60rem;
     margin: 2rem auto 0;
     padding: 0.35rem;
@@ -285,7 +285,6 @@ const ACCESS_TOKEN = import.meta.env.VITE_API_ACCESS_TOKEN;
 const Screen = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = React.useState("");
-  console.log(searchTerm);
 
   const toggleLogout = async () => {
     await signOut(auth);
@@ -318,11 +317,10 @@ const Screen = () => {
 
   const SearchOptions = {
     method: "GET",
-    url: `${baseUrl}/search/multi?query=${searchTerm}`,
+    url: `${baseUrl}/search/multi?query=pirates`,
     params: {
       language: "en-US",
       sort_by: "popularity.desc",
-      include_adult: true,
     },
     headers: {
       accept: "application/json",
@@ -357,7 +355,6 @@ const Screen = () => {
       : results[0];
   });
 
-  // if (searchTerm.length !== 0) {
   const {
     data: searches,
     isError: isErrorSearch,
@@ -366,23 +363,16 @@ const Screen = () => {
     const {
       data: { results },
     } = await Axios.request(SearchOptions);
-    return (
-      searchTerm.length !== 0 &&
-      results?.filter(
-        (result) =>
-          result?.media_type === "tv" || result?.media_type === "movie"
-      )
+    return results?.filter(
+      (result) => result?.media_type === "tv" || result?.media_type === "movie"
     );
   });
-
-  // isErrorSearch && console.log(errorSearch);
-  // }
-
   const isError = isErrorPage || isErrorSearch;
   const error = errorPage || errorSearch;
 
   isError && console.log(error);
-  console.log(searches);
+
+  // isErrorSearch && console.log(errorSearch);
 
   // const fuse = new Fuse(searches);
 
@@ -390,6 +380,7 @@ const Screen = () => {
     <SCREEN background={`url(${backdrop}${page?.backdrop_path})`}>
       <div className="searches">
         <SearchBox setSearchTerm={setSearchTerm} />
+        <Searches searches={searches} />
       </div>
       <div className="wrapper">
         <nav>
