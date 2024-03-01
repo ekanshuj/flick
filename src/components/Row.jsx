@@ -139,11 +139,18 @@ const Row = ({ title, fetchUrl, Trending, Originals }) => {
     url: Trending
       ? `${baseUrl}/${selected === "week" ? fetchUrl[1] : fetchUrl[0]}`
       : `${baseUrl}/${fetchUrl}`,
-    params: {
-      language: "en-US",
-      sort_by: "popularity.desc",
-      with_networks: Originals && "213",
-    },
+    params:
+      //  Originals
+      // ? {
+      //     language: "en-US",
+      //     sort_by: "popularity.desc",
+      //     with_networks: "213",
+      //   }
+      // :
+      {
+        language: "en-US",
+        sort_by: "popularity.desc",
+      },
     headers: {
       accept: "application/json",
       Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -177,47 +184,44 @@ const Row = ({ title, fetchUrl, Trending, Originals }) => {
   );
 
   return (
-    <>
-      <ROW $in={!cookies.get("user") === true ? true : false}>
-        <div className="row_header">
-          <div className="row_header-left">
-            <img src={trending} alt="Trends" loading="lazy" />
-            <div className="row_header-title">
-              <strong>{title}</strong>
-            </div>
-          </div>
-          {Trending && (
-            <SliderToggle selected={selected} setSelected={setSelected} />
-          )}
-        </div>
-        <div>
-          <div className="row_content">
-            {row?.map((collection) => {
-              return (
-                <Link
-                  key={collection?.id}
-                  to={`/${
-                    collection?.media_type === "tv" ||
-                    collection?.first_air_date
-                      ? "tv"
-                      : "movie"
-                  }/${collection?.id}/${
-                    collection?.original_name || collection?.original_title
-                  }`}
-                >
-                  <img
-                    className="poster"
-                    src={`${poster}${collection?.poster_path}`}
-                    alt={collection?.name || "Image"}
-                    loading="lazy"
-                  />
-                </Link>
-              );
-            })}
+    <ROW $in={!cookies.get("user") === true ? true : false}>
+      <div className="row_header">
+        <div className="row_header-left">
+          <img src={trending} alt="Trends" loading="lazy" />
+          <div className="row_header-title">
+            <strong>{title}</strong>
           </div>
         </div>
-      </ROW>
-    </>
+        {Trending && (
+          <SliderToggle selected={selected} setSelected={setSelected} />
+        )}
+      </div>
+      <div>
+        <div className="row_content">
+          {row?.map((collection) => {
+            return (
+              <Link
+                key={collection?.id}
+                to={`/${
+                  collection?.media_type === "tv" || collection?.first_air_date
+                    ? "tv"
+                    : "movie"
+                }/${collection?.id}/${
+                  collection?.original_name || collection?.original_title
+                }`}
+              >
+                <img
+                  className="poster"
+                  src={`${poster}${collection?.poster_path}`}
+                  alt={collection?.name || "Image"}
+                  loading="lazy"
+                />
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </ROW>
   );
 };
 

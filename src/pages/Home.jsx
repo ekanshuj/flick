@@ -5,7 +5,7 @@ import styled from "styled-components";
 import background from "../assets/background.jpg";
 import logo from "../assets/logo.png";
 import { requests } from "../config";
-import Row from "./Row";
+import Row from "../components/Row";
 
 const HOME = styled.div`
   /* border: 2px solid blue; */

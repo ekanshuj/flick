@@ -32,7 +32,7 @@ const Page = () => {
   return (
     <>
       <Screen />
-      {/* <MOVIESANDTV /> */}
+      <MOVIESANDTV />
     </>
   );
 };
@@ -221,12 +221,9 @@ const SCREEN = styled.section`
           }
         }
       }
-      .screen_buttons {
+      .screen_button {
         /* border: 2px solid green; */
         padding: 0.75rem 0.3rem;
-        display: flex;
-        align-items: center;
-        column-gap: 0.5rem;
 
         button {
           color: #fff;
@@ -296,7 +293,7 @@ const Screen = () => {
     data: page,
     isError: isErrorPage,
     error: errorPage,
-  } = useQuery(["Flick_HomePage"], async () => {
+  } = useQuery(["Flick_Home"], async () => {
     const { data } = await Axios.request(pageOptions);
     return data.results[Math.floor(Math.random() * data.results.length - 1)];
   });
@@ -344,7 +341,7 @@ const Screen = () => {
     data: video,
     isError: isErrorVideo,
     error: errorVideo,
-  } = useQuery(["Flick_Data_Videos"], async () => {
+  } = useQuery(["Flick_Videos"], async () => {
     const {
       data: { results },
     } = await Axios.request(optionsVideo);
@@ -355,22 +352,22 @@ const Screen = () => {
       : results[0];
   });
 
-  const {
-    data: searches,
-    isError: isErrorSearch,
-    error: errorSearch,
-  } = useQuery(["Flick_Search"], async () => {
-    const {
-      data: { results },
-    } = await Axios.request(SearchOptions);
-    return results?.filter(
-      (result) => result?.media_type === "tv" || result?.media_type === "movie"
-    );
-  });
-  const isError = isErrorPage || isErrorSearch;
-  const error = errorPage || errorSearch;
+  // const {
+  //   data: searches,
+  //   isError: isErrorSearch,
+  //   error: errorSearch,
+  // } = useQuery(["Flick_Search"], async () => {
+  //   const {
+  //     data: { results },
+  //   } = await Axios.request(SearchOptions);
+  //   return results?.filter(
+  //     (result) => result?.media_type === "tv" || result?.media_type === "movie"
+  //   );
+  // });
+  // const isError = isErrorPage || isErrorSearch;
+  // const error = errorPage || errorSearch;
 
-  isError && console.log(error);
+  // isError && console.log(error);
 
   // isErrorSearch && console.log(errorSearch);
 
@@ -378,10 +375,10 @@ const Screen = () => {
 
   return (
     <SCREEN background={`url(${backdrop}${page?.backdrop_path})`}>
-      <div className="searches">
+      {/* <div className="searches">
         <SearchBox setSearchTerm={setSearchTerm} />
         <Searches searches={searches} />
-      </div>
+      </div> */}
       <div className="wrapper">
         <nav>
           <div className="nav_left">
@@ -406,30 +403,25 @@ const Screen = () => {
               {page?.name || page?.title || page?.original_name}
             </strong>
             <div className="text">
-              <strong>{page?.vote_average} R</strong>
+              <strong>{page?.vote_average}</strong>
               <p>{page?.first_air_date}</p>
-              <strong>{page?.popularity} P</strong>
             </div>
             <div className="overview">
               <hr />
               <p>{page?.overview}</p>
             </div>
           </div>
-          <div className="screen_buttons">
+          <div className="screen_button">
             <a
               target="_blank"
               href={`https://www.youtube.com/watch?v=${video?.key}`}
             >
               <img src={play} alt="Play" loading="lazy" />
             </a>
-            <button>
-              <strong>My List</strong>
-            </button>
           </div>
         </div>
         <div className="mask"></div>
       </div>
-      <Row title="Originals" fetchUrl={requests.fetchOriginals} Originals />
     </SCREEN>
   );
 };
@@ -460,7 +452,8 @@ const SearchBox = ({ setSearchTerm }) => {
 const MOVIESANDTV = () => {
   return (
     <section>
-      {/* <Row title="Top Rated" fetchUrl={requests.fetchTopRatedMovies} /> */}
+      <Row title="Originals" fetchUrl={requests.fetchTrendingByDay} Originals />
+      <Row title="Top Rated" fetchUrl={requests.fetchTopRatedMovies} />
     </section>
   );
 };

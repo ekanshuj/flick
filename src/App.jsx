@@ -7,11 +7,11 @@ import BarLoader from "react-spinners/BarLoader";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-const Signin = lazy(() => import("./components/Signin"));
+const Signin = lazy(() => import("./pages/Signin"));
 const Page = lazy(() => import("./components/Page"));
-const Signup = lazy(() => import("./components/Signup"));
-const Home = lazy(() => import("./components/Home"));
-const Data = lazy(() => import("./components/Data"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Home = lazy(() => import("./pages/Home"));
+const Data = lazy(() => import("./pages/Data"));
 
 const client = new QueryClient({
   defaultOptions: {
@@ -32,6 +32,7 @@ const App = () => {
       navigate("/");
     }
   }, []);
+
   return (
     <QueryClientProvider client={client}>
       <main className="app">
@@ -57,7 +58,7 @@ const App = () => {
           </Routes>
         </Suspense>
       </main>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };
