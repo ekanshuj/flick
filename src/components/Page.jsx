@@ -1,26 +1,23 @@
 import React, { useEffect } from "react";
 import { requests } from "../config";
-import { Row, Searches } from ".";
+import { Row } from ".";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-import { QueryErrorResetBoundary, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Axios from "axios";
 import { baseUrl, backdrop } from "../config/config";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase-config";
-import Fuse from "fuse.js";
 
 import logo from "../assets/logo.png";
 import logout from "../assets/logout.svg";
 import list from "../assets/list.svg";
 import search from "../assets/search.svg";
 import play from "../assets/play.svg";
-import movie from "../assets/movie.svg";
-import close from "../assets/close.svg";
 
 const Page = () => {
   const navigate = useNavigate();
@@ -42,55 +39,6 @@ const SCREEN = styled.section`
   min-height: 100vh;
   color: ghostwhite;
   position: relative;
-
-  .searches {
-    height: 100dvh;
-    position: absolute;
-    inset: 0;
-    background: #fff;
-    /* background: radial-gradient(
-      circle at 24.1% 68.8%,
-      rgb(0, 0, 0) 0%,
-      #171717 50%,
-      rgb(0, 0, 0) 99.4%
-    ); */
-    max-width: 60rem;
-    margin: 2rem auto 0;
-    padding: 0.35rem;
-    /* padding: 0.35rem 0.35rem 5rem 0.35rem; */
-    z-index: 999;
-    border-radius: 0.75rem;
-
-    .search_box {
-      display: flex;
-      align-items: center;
-      /* justify-content: center; */
-
-      div:last-child {
-        img {
-          cursor: pointer;
-        }
-      }
-
-      .search_box-input {
-        flex: 1;
-        margin: 0 0.2rem;
-        input {
-          width: 100%;
-          padding: 0.8rem 0.75rem;
-          outline: none;
-          border: none;
-          border-radius: 0.25rem;
-          font-size: 1.1rem;
-
-          ::placeholder {
-            font-size: 0.95rem;
-            letter-spacing: 1px;
-          }
-        }
-      }
-    }
-  }
 
   .wrapper {
     /* border: 2px solid greenyellow; */
@@ -281,7 +229,6 @@ const ACCESS_TOKEN = import.meta.env.VITE_API_ACCESS_TOKEN;
 
 const Screen = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = React.useState("");
 
   const toggleLogout = async () => {
     await signOut(auth);
@@ -293,7 +240,7 @@ const Screen = () => {
     data: page,
     isError: isErrorPage,
     error: errorPage,
-  } = useQuery(["Flick_Home"], async () => {
+  } = useQuery(["Flick"], async () => {
     const { data } = await Axios.request(pageOptions);
     return data.results[Math.floor(Math.random() * data.results.length - 1)];
   });
@@ -305,19 +252,6 @@ const Screen = () => {
       language: "en-US",
       sort_by: "popularity.desc",
       with_networks: "213",
-    },
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${ACCESS_TOKEN}`,
-    },
-  };
-
-  const SearchOptions = {
-    method: "GET",
-    url: `${baseUrl}/search/multi?query=pirates`,
-    params: {
-      language: "en-US",
-      sort_by: "popularity.desc",
     },
     headers: {
       accept: "application/json",
@@ -352,18 +286,6 @@ const Screen = () => {
       : results[0];
   });
 
-  // const {
-  //   data: searches,
-  //   isError: isErrorSearch,
-  //   error: errorSearch,
-  // } = useQuery(["Flick_Search"], async () => {
-  //   const {
-  //     data: { results },
-  //   } = await Axios.request(SearchOptions);
-  //   return results?.filter(
-  //     (result) => result?.media_type === "tv" || result?.media_type === "movie"
-  //   );
-  // });
   // const isError = isErrorPage || isErrorSearch;
   // const error = errorPage || errorSearch;
 
@@ -375,17 +297,15 @@ const Screen = () => {
 
   return (
     <SCREEN background={`url(${backdrop}${page?.backdrop_path})`}>
-      {/* <div className="searches">
-        <SearchBox setSearchTerm={setSearchTerm} />
-        <Searches searches={searches} />
-      </div> */}
       <div className="wrapper">
         <nav>
           <div className="nav_left">
             <img src={logo} alt="Flick" loading="lazy" />
           </div>
           <div className="nav_right">
-            <img src={search} alt="Search" loading="lazy" />
+            <Link to="/search">
+              <img src={search} alt="Search" loading="lazy" />
+            </Link>
             {/* MY LIST  */}
             <img src={list} alt="List" loading="lazy" />
             <img
@@ -422,38 +342,17 @@ const Screen = () => {
         </div>
         <div className="mask"></div>
       </div>
+      <Row title="Originals" fetchUrl={requests.fetchOriginals} Originals />
     </SCREEN>
   );
 };
 // SCREEN <ENDS> HERE
 
-const SearchBox = ({ setSearchTerm }) => {
-  return (
-    <div className="search_box">
-      <div>
-        <img src={movie} alt="List" loading="lazy" />
-      </div>
-      <div className="search_box-input">
-        <input
-          onKeyUp={(e) => setSearchTerm(e.target.value)}
-          type="search"
-          placeholder="Search TV and Movies"
-          id="flick_search"
-        />
-      </div>
-      <div>
-        <img src={close} alt="List" loading="lazy" />
-      </div>
-    </div>
-  );
-};
-
 // MOVIESANDTV <STARTS> HERE
 const MOVIESANDTV = () => {
   return (
     <section>
-      <Row title="Originals" fetchUrl={requests.fetchTrendingByDay} Originals />
-      <Row title="Top Rated" fetchUrl={requests.fetchTopRatedMovies} />
+      {/* <Row title="Top Rated" fetchUrl={requests.fetchTopRatedMovies} /> */}
     </section>
   );
 };

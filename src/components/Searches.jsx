@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { poster } from "../config/config";
 
+import { poster } from "../config/config";
 import fallback from "../assets/fallbackImage.png";
 
 const SEARCHES = styled.section`

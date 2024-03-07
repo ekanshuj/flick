@@ -93,11 +93,11 @@ const ROW = styled.section`
           font-size: clamp(1rem, 0.9729rem + 0.2064vw, 1.105rem);
         }
       }
-      .day {
+      .Day {
         background: #d90429;
         color: #fff;
       }
-      .week {
+      .Week {
         background: #d90429;
         color: #fff;
       }
@@ -112,6 +112,7 @@ const ROW = styled.section`
     }
     .row_content {
       display: flex;
+      align-items: center;
       /* border: 2px solid fuchsia; */
 
       .poster {
@@ -132,25 +133,25 @@ const ROW = styled.section`
 const ACCESS_TOKEN = import.meta.env.VITE_API_ACCESS_TOKEN;
 
 const Row = ({ title, fetchUrl, Trending, Originals }) => {
-  const [selected, setSelected] = React.useState("day");
-
+  const [selected, setSelected] = React.useState("Day");
   const options = {
     method: "GET",
     url: Trending
-      ? `${baseUrl}/${selected === "week" ? fetchUrl[1] : fetchUrl[0]}`
+      ? `${baseUrl}/${selected === "Week" ? fetchUrl[1] : fetchUrl[0]}`
       : `${baseUrl}/${fetchUrl}`,
     params:
-      //  Originals
-      // ? {
-      //     language: "en-US",
-      //     sort_by: "popularity.desc",
-      //     with_networks: "213",
-      //   }
-      // :
+      // Originals
+      //   ?
       {
         language: "en-US",
         sort_by: "popularity.desc",
+        with_networks: "213",
       },
+    // :
+    // {
+    //   language: "en-US",
+    //   // sort_by: "popularity.desc",
+    // }
     headers: {
       accept: "application/json",
       Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -229,17 +230,17 @@ const SliderToggle = ({ selected, setSelected }) => {
   return (
     <div className="row_header-toggle">
       <button
-        className={`${selected === "day" && "day"}`}
+        className={`${selected === "Day" && "Day"}`}
         onClick={() => {
-          setSelected("day");
+          setSelected("Day");
         }}
       >
         <span>Today</span>
       </button>
       <button
-        className={`${selected === "week" && "week"}`}
+        className={`${selected === "Week" && "Week"}`}
         onClick={() => {
-          setSelected("week");
+          setSelected("Week");
         }}
       >
         <span>This Week</span>
